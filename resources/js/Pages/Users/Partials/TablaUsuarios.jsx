@@ -136,10 +136,10 @@ const TablaUsuarios = ({ users, filters }) => {
                         {link.url ? (
                             <Link
                                 href={`${link.url}&search=${searchQuery}`}
-                                className={`px-4 py-2 rounded ${
+                                className={`px-4 py-2 rounded-lg border transition-colors duration-200 ${
                                     link.active
                                         ? "bg-mainbutton text-white border-mainbutton"
-                                        : "text-mainbutton border-gray-300 hover:bg-gray-100"
+                                        : "bg-white text-mainbutton border-gray-300 hover:bg-gray-100"
                                 }`}
                                 dangerouslySetInnerHTML={{ __html: link.label }}
                             />
