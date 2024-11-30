@@ -110,8 +110,8 @@ const TablaNotas = ({ notas, filters }) => {
                                     className="text-blue-500 hover:underline"
                                     onClick={() => handleModalOpen(nota)}
                                 >
-                                    <i className="fa-solid fa-plus"></i> nota a{" "}
-                                    {nota.paciente.nombres.split(" ")[0]}{" "}
+                                    <i class="fa-solid fa-notes-medical"></i>{" "}
+                                    nota a {nota.paciente.nombres.split(" ")[0]}{" "}
                                     {nota.paciente.apellidos.split(" ")[0]}
                                 </button>
                                 <span className="text-sm text-gray-300">|</span>
@@ -131,7 +131,7 @@ const TablaNotas = ({ notas, filters }) => {
                                     onClick={() => handleDelete(nota.id)}
                                 >
                                     <i className="fa-solid fa-trash"></i>{" "}
-                                    Eliminar Nota
+                                    Eliminar
                                 </button>
                             </div>
                         </div>

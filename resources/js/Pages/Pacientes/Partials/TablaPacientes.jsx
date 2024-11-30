@@ -91,16 +91,26 @@ const TablaPacientes = ({ pacientes, filters }) => {
                                             paciente.id
                                         )}
                                         className="text-blue-600 mr-2"
+                                        tooltip="Editar Paciente"
                                     >
+                                        <i
+                                            className="fa-solid fa-pen-to-square"
+                                            aria-label="Editar Paciente"
+                                            alt="Editar Paciente"
+                                        ></i>{" "}
                                         Editar
                                     </Link>
-                                    |
+                                    <span className="text-sm text-gray-300">
+                                        |
+                                    </span>
+
                                     <button
                                         onClick={() =>
                                             handleDelete(paciente.id)
                                         }
                                         className="text-red-600 ml-2"
                                     >
+                                        <i className="fa-solid fa-trash"></i>{" "}
                                         Eliminar
                                     </button>
                                 </td>
