@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, usePage, router } from "@inertiajs/react";
 import { toast } from "react-toastify";
 
-const TablaPacientes = ({ pacientes }) => {
+const TablaPacientes = ({ pacientes, filters }) => {
+    const searchQuery = filters.search || "";
     const { flash } = usePage().props;
     const userLogged = usePage().props.auth.user;
     const [showFlash, setShowFlash] = useState(
@@ -130,7 +131,7 @@ const TablaPacientes = ({ pacientes }) => {
                     <span key={index} className="mx-1">
                         {link.url ? (
                             <Link
-                                href={link.url}
+                                href={`${link.url}&search=${searchQuery}`}
                                 className={`px-4 py-2 rounded-lg border transition-colors duration-200 ${
                                     link.active
                                         ? "bg-mainbutton text-white border-mainbutton"
