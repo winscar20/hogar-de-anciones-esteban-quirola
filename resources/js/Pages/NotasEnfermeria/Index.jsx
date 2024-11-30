@@ -7,32 +7,39 @@ import { toast } from "react-toastify";
 const Index = () => {
     const { notas, flash, filters } = usePage().props;
     const [searchQuery, setSearchQuery] = useState(filters.search || "");
-    const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        const handler = setTimeout(() => {
-            // Realiza la búsqueda solo si hay cambios en el query
-            if (debouncedQuery.trim() !== filters.search) {
-                setIsLoading(true);
+        setSearchQuery(filters.search || "");
+    }, []);
+    useEffect(() => {
+        if (
+            searchQuery.trim() !== filters.search &&
+            !(searchQuery === "" && filters.search === undefined)
+        ) {
+            const handler = setTimeout(() => {
                 router.get(
                     route("notas-enfermeria.index"),
-                    { search: debouncedQuery },
-                    { preserveState: true, onFinish: () => setIsLoading(false) }
+                    { search: searchQuery, page: notas.current_page || 1 },
+                    { preserveState: true }
                 );
-            }
-        }, 800);
+            }, 500);
 
-        return () => clearTimeout(handler);
-    }, [debouncedQuery]);
+            return () => clearTimeout(handler); // Limpia el timeout
+        }
+    }, [searchQuery, filters.search]);
 
     const handleInputChange = (e) => {
-        setSearchQuery(e.target.value);
+        const value = e.target.value;
+        setSearchQuery(value);
 
-        if (e.target.value.trim() === "") {
-            setDebouncedQuery("");
-        } else {
-            setDebouncedQuery(e.target.value);
+        // Si el campo está vacío, reinicia a la página 1
+        if (value.trim() === "") {
+            router.get(
+                route("notas-enfermeria.index"),
+                { page: 1 },
+                { preserveState: true }
+            );
         }
     };
     useEffect(() => {
@@ -141,7 +148,7 @@ const Index = () => {
                             <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
                         </div>
                     ) : (
-                        <TablaNotas notas={notas} />
+                        <TablaNotas notas={notas} filters={filters} />
                     )}
                 </div>
             </div>

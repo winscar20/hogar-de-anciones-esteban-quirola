@@ -3,7 +3,8 @@ import { Link, usePage, router } from "@inertiajs/react";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
 import ModalCreateForm from "./ModalCreateForm";
-const TablaNotas = ({ notas }) => {
+const TablaNotas = ({ notas, filters }) => {
+    const searchQuery = filters.search || "";
     const { flash } = usePage().props;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [nota, setNota] = useState({});
@@ -154,7 +155,7 @@ const TablaNotas = ({ notas }) => {
                     <span key={index} className="mx-1">
                         {link.url ? (
                             <Link
-                                href={link.url}
+                                href={`${link.url}&search=${searchQuery}`}
                                 className={`px-4 py-2 rounded-lg border transition-colors duration-200 ${
                                     link.active
                                         ? "bg-mainbutton text-white border-mainbutton"
