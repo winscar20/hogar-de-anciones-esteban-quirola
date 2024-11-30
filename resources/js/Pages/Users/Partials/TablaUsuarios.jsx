@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, usePage, router } from "@inertiajs/react";
 import { toast } from "react-toastify";
 
-const TablaUsuarios = ({ users }) => {
+const TablaUsuarios = ({ users, filters }) => {
+    const searchQuery = filters.search || "";
     const { flash } = usePage().props;
     const userLogged = usePage().props.auth.user;
     const [showFlash, setShowFlash] = useState(
@@ -134,14 +135,14 @@ const TablaUsuarios = ({ users }) => {
                     <span key={index} className="mx-1">
                         {link.url ? (
                             <Link
-                                href={link.url}
-                                className={`px-4 py-2 rounded-lg border transition-colors duration-200 ${
+                                href={`${link.url}&search=${searchQuery}`}
+                                className={`px-4 py-2 rounded ${
                                     link.active
                                         ? "bg-mainbutton text-white border-mainbutton"
-                                        : "bg-white text-mainbutton border-gray-300 hover:bg-gray-100"
+                                        : "text-mainbutton border-gray-300 hover:bg-gray-100"
                                 }`}
                                 dangerouslySetInnerHTML={{ __html: link.label }}
-                            ></Link>
+                            />
                         ) : (
                             <span
                                 className="px-4 py-2 rounded-lg border bg-gray-100 text-gray-400"
