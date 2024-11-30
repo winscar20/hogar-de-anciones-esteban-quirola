@@ -110,7 +110,7 @@ const TablaNotas = ({ notas, filters }) => {
                                     className="text-blue-500 hover:underline"
                                     onClick={() => handleModalOpen(nota)}
                                 >
-                                    <i class="fa-solid fa-notes-medical"></i>{" "}
+                                    <i className="fa-solid fa-notes-medical"></i>{" "}
                                     nota a {nota.paciente.nombres.split(" ")[0]}{" "}
                                     {nota.paciente.apellidos.split(" ")[0]}
                                 </button>
