@@ -20,7 +20,7 @@ class RestrictUsersCrud
 
         // Veriicamos que el usuario  sea externo
         // dd($user->role->name);
-        if ($user && !in_array($user->role->name, ['Administrativo', 'SuperAdmin'])) {
+        if ($user && !in_array($user->role->name, ['Administrativo', 'SuperAdmin', 'Doctor', 'Enfermeria'])) {
             return response()->view('403', [], 403);
         }
         return $next($request);

@@ -8,7 +8,6 @@ import { Editor } from "@tinymce/tinymce-react";
 import { format } from "date-fns";
 import { useForm, usePage, Link } from "@inertiajs/react";
 const ModalCreateForm = ({ isOpen, onClose, title, nota }) => {
-    console.log(nota);
     if (!isOpen) {
         return null;
     }
@@ -45,6 +44,11 @@ const ModalCreateForm = ({ isOpen, onClose, title, nota }) => {
         onErrors: (errors) => {
             console.log(errors);
         };
+    };
+    const handleClose = () => {
+        setData("nota", "");
+        setData("fecha", new Date());
+        onClose();
     };
     return (
         <>
@@ -118,14 +122,24 @@ const ModalCreateForm = ({ isOpen, onClose, title, nota }) => {
                                         />
                                     </div>
                                 </div>
+                                {loggedUser.role.name !== "Doctor" &&
+                                    loggedUser.role.name !== "Enfermeria" && (
+                                        <div className="bg-pink-100 border-red-400 p-4 text-sm rounded-md">
+                                            No tienes un rol relacionado con
+                                            Personal Médico o de Enfermería.
+                                            Esto puede afectar a los reportes
+                                            medicos, tu usuarios quedara como
+                                            responsable de esta nota.
+                                        </div>
+                                    )}
                                 <hr />
                                 <div className="mt-4">
-                                    <Link
-                                        href={route("notas-enfermeria.index")}
+                                    <button
+                                        onClick={() => handleClose()}
                                         className="bg-gray-600 inline-flex items-center rounded-md border border-transparent px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-gray-400 "
                                     >
                                         Cancelar
-                                    </Link>
+                                    </button>
                                     <PrimaryButton
                                         className="ms-4"
                                         disabled={processing}

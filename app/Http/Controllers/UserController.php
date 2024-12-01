@@ -22,13 +22,19 @@ class UserController extends Controller
             return $query->where('name', 'LIKE', "%$search%")
                 ->orWhere('email', 'LIKE', "%$search%");
         })
-        ->when($loggedUser->role->name !== 'SuperAdmin', function ($query) {
-            // Si no es SuperAdmin, excluir usuarios con rol SuperAdmin
-            return $query->whereHas('role', function ($roleQuery) {
-                $roleQuery->where('name', '!=', 'SuperAdmin');
+        ->when($loggedUser->role->name !== 'SuperAdmin', function ($query) use ($loggedUser) {
+            $query->whereHas('role', function ($roleQuery) use ($loggedUser) {
+                // Condiciones según el rol del usuario logueado
+                if ($loggedUser->role->name === 'Administrativo') {
+                    // Administrativo: Excluir SuperAdmin
+                    $roleQuery->whereNotIn('name', ['SuperAdmin']);
+                } elseif (in_array($loggedUser->role->name, ['Doctor', 'Enfermeria'])) {
+                    // Doctor y Enfermería: Excluir SuperAdmin y Administrativos
+                    $roleQuery->whereIn('name', ['Doctor', 'Enfermeria', 'Externo']);
+                }
             });
         })
-        ->where('id', '!=', $loggedUser->id) // Excluir al usuario logueado
+        ->where('id', '!=', $loggedUser->id) 
         ->paginate(10);
 
         return Inertia::render('Users/Index', [
@@ -39,9 +45,6 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Display the users form used to create new user
-     */
     public function create() {
         $roles = Role::all();
         return Inertia::render('Users/Create', [
@@ -50,7 +53,6 @@ class UserController extends Controller
     }
 
     public function store(Request $request) {
-        // Validar los datos enviados desde el formulario
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -58,8 +60,6 @@ class UserController extends Controller
             'role' => 'required',
             'phone' => 'nullable|string|max:15',
         ]);
-    
-        // Crear el usuario
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -67,14 +67,12 @@ class UserController extends Controller
             'role_id' => $validated['role'],
             'phone' => $validated['phone'] ?? null,
         ]);
-    
-        // Retornar una respuesta JSON con el usuario creado
         return redirect()->route('users.index')->with('success', 'Usuario creado exitosamente.');
     }
 
     public function edit($id){
-        $user = User::with('role')->findOrFail($id); // Encuentra el usuario o lanza un error 404
-        $roles = Role::all(); // Lista de roles disponibles
+        $user = User::with('role')->findOrFail($id);
+        $roles = Role::all();
 
         return Inertia::render('Users/Edit', [
             'user' => $user,
@@ -83,9 +81,8 @@ class UserController extends Controller
     }
 
     public function update(Request $request, $id){
-        $user = User::findOrFail($id); // Encuentra el usuario o lanza un error 404
+        $user = User::findOrFail($id);
 
-        // Validar los datos enviados desde el formulario
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => "required|email|unique:users,email,{$id}",
@@ -95,7 +92,6 @@ class UserController extends Controller
             'phone' => 'nullable|string|max:15',
         ]);
 
-        // Actualizar los datos del usuario
         $user->update([
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -122,15 +118,17 @@ class UserController extends Controller
     public function search(Request $request) {
         $query = $request->input('query');
 
-        $users = User::whereHas('role', function ($roleQuery) {
-                $roleQuery->where('name', 'Externo');
-            })
-            ->where(function ($queryBuilder) use ($query) {
-                $queryBuilder->where('name', 'LIKE', "%$query%")
-                    ->orWhere('email', 'LIKE', "%$query%");
-            })
-            ->get();
-
+        $users = User::with(['role' => function ($query) {
+            $query->where('name', 'Externo');
+        }])
+        ->where(function ($queryBuilder) use ($query) {
+            $queryBuilder->where('name', 'LIKE', "%$query%")
+                ->orWhere('email', 'LIKE', "%$query%");
+        })
+        ->get()
+        ->filter(function ($user) {
+            return $user->role && $user->role->name === 'Externo';
+        });
         return response()->json($users);
     }
     public function show($id)

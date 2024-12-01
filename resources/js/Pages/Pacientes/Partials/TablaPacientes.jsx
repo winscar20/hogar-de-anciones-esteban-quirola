@@ -1,14 +1,22 @@
 import { useState } from "react";
 import { Link, usePage, router } from "@inertiajs/react";
 import { toast } from "react-toastify";
+import ModalCreateForm from "@/Components/ModalCreateForm";
 
 const TablaPacientes = ({ pacientes, filters }) => {
+    const loggedUser = usePage().props.auth.user;
     const searchQuery = filters.search || "";
     const { flash } = usePage().props;
     const userLogged = usePage().props.auth.user;
-    const [showFlash, setShowFlash] = useState(
-        !!flash?.success || !!flash?.error
-    );
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [nota, setNota] = useState({});
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => {
+        setNota({});
+        setIsModalOpen(false);
+    };
+
     const handleDelete = (id) => {
         if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
             router.delete(route("pacientes.destroy", id), {
@@ -40,8 +48,23 @@ const TablaPacientes = ({ pacientes, filters }) => {
             });
         }
     };
+
+    const handleModalOpen = (paciente) => {
+        setNota({
+            paciente,
+        });
+        openModal();
+    };
     return (
         <>
+            {isModalOpen && (
+                <ModalCreateForm
+                    isOpen={isModalOpen}
+                    onClose={closeModal}
+                    title={"Agregar Nota a Paciente"}
+                    nota={nota}
+                ></ModalCreateForm>
+            )}
             <table className="min-w-full text-left text-sm whitespace-nowrap">
                 <thead className="uppercase tracking-wider border-b-2 dark:border-neutral-600">
                     <tr>
@@ -103,7 +126,26 @@ const TablaPacientes = ({ pacientes, filters }) => {
                                     <span className="text-sm text-gray-300">
                                         |
                                     </span>
-
+                                    {(loggedUser.role.name === "Enfermeria" ||
+                                        loggedUser.role.name ===
+                                            "Administrativo" ||
+                                        loggedUser.role.name ===
+                                            "SuperAdmin") && (
+                                        <>
+                                            <button
+                                                className="text-blue-500 hover:underline"
+                                                onClick={() =>
+                                                    handleModalOpen(paciente)
+                                                }
+                                            >
+                                                <i className="fa-solid fa-notes-medical"></i>{" "}
+                                                Nota de Enfermeria
+                                            </button>
+                                            <span className="text-sm text-gray-300">
+                                                |
+                                            </span>
+                                        </>
+                                    )}
                                     <button
                                         onClick={() =>
                                             handleDelete(paciente.id)

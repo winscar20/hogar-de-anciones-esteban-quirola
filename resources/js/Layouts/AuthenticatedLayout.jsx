@@ -29,9 +29,7 @@ export default function Authenticated({ header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                {["Administrativo", "SuperAdmin"].includes(
-                                    user.role.name
-                                ) && (
+                                {user.role.name !== "Externo" && (
                                     <NavLink
                                         href={route("users.index")}
                                         active={route().current("users")}

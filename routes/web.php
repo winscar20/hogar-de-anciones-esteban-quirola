@@ -30,10 +30,10 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::middleware(RestrictUsersCrud::class)->group(function () {
+    Route::middleware(RestrictUsersCrud::class)->group(function () {
         Route::resource('/users', UserController::class);
         Route::get('api/users/search', [UserController::class, 'search'])->name('users.search');
-    // });
+    });
 
     // Pacientes
     // Route::get('/pacientes', [PacienteController::class, 'index'])->name('pacientes.index');

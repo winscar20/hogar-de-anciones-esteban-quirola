@@ -22,8 +22,6 @@ const Edit = ({ user, roles }) => {
             preserveScroll: true,
         });
     };
-    console.log(user);
-    console.log(data);
     return (
         <AuthenticatedLayout
             header={

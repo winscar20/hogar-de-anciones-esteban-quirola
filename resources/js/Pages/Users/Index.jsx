@@ -129,23 +129,20 @@ const Index = () => {
                             </svg>
                         </span>
                     </div>
-                    {(loggedUser.role.name === "SuperAdmin" ||
-                        loggedUser.role.name === "Administrativo") && (
-                        <div className="relative m-[6px] mb-3 float-right hidden sm:block">
-                            <Link
-                                href={route("users.create")}
-                                className="
+                    <div className="relative m-[6px] mb-3 float-right hidden sm:block">
+                        <Link
+                            href={route("users.create")}
+                            className="
                                     px-4
                                     py-3
                                     rounded-full
                                     shadow
                                     bg-mainbutton
                                     "
-                            >
-                                +
-                            </Link>
-                        </div>
-                    )}
+                        >
+                            +
+                        </Link>
+                    </div>
                     {isLoading ? (
                         <div className="flex justify-center items-center h-40">
                             <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>

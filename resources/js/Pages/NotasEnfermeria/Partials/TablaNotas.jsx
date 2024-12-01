@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, usePage, router } from "@inertiajs/react";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
-import ModalCreateForm from "./ModalCreateForm";
+import ModalCreateForm from "@/Components/ModalCreateForm";
 const TablaNotas = ({ notas, filters }) => {
     const searchQuery = filters.search || "";
     const { flash } = usePage().props;
@@ -52,12 +52,14 @@ const TablaNotas = ({ notas, filters }) => {
     };
     return (
         <>
-            <ModalCreateForm
-                isOpen={isModalOpen}
-                onClose={closeModal}
-                title={"Agregar Nota a Paciente"}
-                nota={nota}
-            ></ModalCreateForm>
+            {isModalOpen && (
+                <ModalCreateForm
+                    isOpen={isModalOpen}
+                    onClose={closeModal}
+                    title={"Agregar Nota a Paciente"}
+                    nota={nota}
+                ></ModalCreateForm>
+            )}
             <div className="container mx-auto px-4 mt-16">
                 {notas.data.length > 0 ? (
                     notas.data.map((nota, index) => (

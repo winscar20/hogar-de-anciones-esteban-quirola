@@ -139,12 +139,34 @@ const Create = () => {
                                 required
                             >
                                 {roles
-                                    .filter(
-                                        (rol) =>
+                                    .filter((rol) => {
+                                        if (
                                             loggedUser.role.name ===
-                                                "SuperAdmin" ||
-                                            rol.name !== "SuperAdmin"
-                                    )
+                                            "SuperAdmin"
+                                        ) {
+                                            return true;
+                                        }
+
+                                        if (
+                                            loggedUser.role.name ===
+                                            "Administrativo"
+                                        ) {
+                                            return rol.name !== "SuperAdmin";
+                                        }
+
+                                        if (
+                                            loggedUser.role.name === "Doctor" ||
+                                            loggedUser.role.name ===
+                                                "Enfermeria"
+                                        ) {
+                                            return [
+                                                "Doctor",
+                                                "Enfermeria",
+                                                "Externo",
+                                            ].includes(rol.name);
+                                        }
+                                        return false;
+                                    })
                                     .map((rol) => (
                                         <option key={rol.id} value={rol.id}>
                                             {rol.name}

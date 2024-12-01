@@ -89,7 +89,7 @@ const TablaUsuarios = ({ users, filters }) => {
                                         <span>Inactivo</span>
                                     )}
                                 </td>
-                                {userLogged.role.name === "SuperAdmin" && (
+                                {userLogged.role.name !== "Externo" && (
                                     <td className="px-6 py-4">
                                         <Link
                                             href={route("users.edit", user.id)}
