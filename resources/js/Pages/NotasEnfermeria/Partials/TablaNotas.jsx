@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { format } from "date-fns";
 import ModalCreateForm from "@/Components/ModalCreateForm";
 const TablaNotas = ({ notas, filters }) => {
+    const loggedUser = usePage().props.auth.user;
     const searchQuery = filters.search || "";
     const { flash } = usePage().props;
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -107,35 +108,47 @@ const TablaNotas = ({ notas, filters }) => {
                                     }}
                                 ></p>
                             </div>
-                            <div className="flex justify-end mt-4 space-x-4">
-                                <button
-                                    className="text-blue-500 hover:underline"
-                                    onClick={() => handleModalOpen(nota)}
-                                >
-                                    <i className="fa-solid fa-notes-medical"></i>{" "}
-                                    nota a {nota.paciente.nombres.split(" ")[0]}{" "}
-                                    {nota.paciente.apellidos.split(" ")[0]}
-                                </button>
-                                <span className="text-sm text-gray-300">|</span>
-                                <Link
-                                    className="text-blue-500 hover:underline"
-                                    href={route(
-                                        "notas-enfermeria.edit",
-                                        nota.id
-                                    )}
-                                >
-                                    <i className="fa-solid fa-pen-to-square"></i>{" "}
-                                    Editar
-                                </Link>
-                                <span className="text-sm text-gray-300">|</span>
-                                <button
-                                    className="text-red-500 hover:underline"
-                                    onClick={() => handleDelete(nota.id)}
-                                >
-                                    <i className="fa-solid fa-trash"></i>{" "}
-                                    Eliminar
-                                </button>
-                            </div>
+                            {(loggedUser.role.name === "Enfermeria" && (
+                                <div className="flex justify-end mt-4 space-x-4">
+                                    <button
+                                        className="text-blue-500 hover:underline"
+                                        onClick={() => handleModalOpen(nota)}
+                                    >
+                                        <i className="fa-solid fa-notes-medical"></i>{" "}
+                                        nota a{" "}
+                                        {nota.paciente.nombres.split(" ")[0]}{" "}
+                                        {nota.paciente.apellidos.split(" ")[0]}
+                                    </button>
+                                    <span className="text-sm text-gray-300">
+                                        |
+                                    </span>
+                                    <Link
+                                        className="text-blue-500 hover:underline"
+                                        href={route(
+                                            "notas-enfermeria.edit",
+                                            nota.id
+                                        )}
+                                    >
+                                        <i className="fa-solid fa-pen-to-square"></i>{" "}
+                                        Editar
+                                    </Link>
+                                    <span className="text-sm text-gray-300">
+                                        |
+                                    </span>
+                                    <button
+                                        className="text-red-500 hover:underline"
+                                        onClick={() => handleDelete(nota.id)}
+                                    >
+                                        <i className="fa-solid fa-trash"></i>{" "}
+                                        Eliminar
+                                    </button>
+                                </div>
+                            )) || (
+                                <div className="flex justify-end mt-4 space-x-4 text-gray-400">
+                                    Solo personal de enfermería tiene opciones
+                                    para editar o agreagar mas notas.
+                                </div>
+                            )}
                         </div>
                     ))
                 ) : (

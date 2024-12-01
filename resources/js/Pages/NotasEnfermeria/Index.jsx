@@ -5,6 +5,7 @@ import TablaNotas from "./Partials/TablaNotas";
 import { Link, usePage, router } from "@inertiajs/react";
 import { toast } from "react-toastify";
 const Index = () => {
+    const loggedUser = usePage().props.auth.user;
     const { notas, flash, filters } = usePage().props;
     const [searchQuery, setSearchQuery] = useState(filters.search || "");
     const [isLoading, setIsLoading] = useState(false);
@@ -129,20 +130,22 @@ const Index = () => {
                             </svg>
                         </span>
                     </div>
-                    <div className="relative m-[6px] mb-3 float-right hidden sm:block">
-                        <Link
-                            href={route("notas-enfermeria.create")}
-                            className="
+                    {loggedUser.role.name === "Enfermeria" && (
+                        <div className="relative m-[6px] mb-3 float-right hidden sm:block">
+                            <Link
+                                href={route("notas-enfermeria.create")}
+                                className="
                                     px-4
                                     py-3
                                     rounded-full
                                     shadow
                                     bg-mainbutton
                                     "
-                        >
-                            +
-                        </Link>
-                    </div>
+                            >
+                                +
+                            </Link>
+                        </div>
+                    )}
                     {isLoading ? (
                         <div className="flex justify-center items-center h-40">
                             <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
