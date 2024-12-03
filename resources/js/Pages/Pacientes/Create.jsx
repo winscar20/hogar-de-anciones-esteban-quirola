@@ -17,7 +17,7 @@ const Create = () => {
         cedula: "",
         estado_civil: "",
         ocupacion: "",
-        institucion: "",
+        telefono: "",
         motivo_ingreso: "",
         antecedentes_patologicos: "",
         enfermedad_actual: "",
@@ -47,7 +47,7 @@ const Create = () => {
                 setData("cedula", "");
                 setData("estado_civil", "");
                 setData("ocupacion", "");
-                setData("institucion", "");
+                setData("telefono", "");
                 setData("motivo_ingreso", "");
                 setData("antecedentes_patologicos", "");
                 setData("enfermedad_actual", "");
@@ -233,22 +233,22 @@ const Create = () => {
                                 />
                             </div>
 
-                            {/* Campo Institución */}
+                            {/* Campo telefono */}
                             <div>
                                 <InputLabel className="block text-gray-700">
-                                    Institución
+                                    Telefono
                                 </InputLabel>
                                 <TextInput
                                     type="text"
-                                    name="institucion"
-                                    value={data.institucion || ""}
+                                    name="telefono"
+                                    value={data.telefono || ""}
                                     onChange={(e) =>
-                                        setData("institucion", e.target.value)
+                                        setData("telefono", e.target.value)
                                     }
                                     className="w-full border rounded px-3 py-2"
                                 />
                                 <InputError
-                                    message={errors.institucion}
+                                    message={errors.telefono}
                                     className="mt-2"
                                 />
                             </div>

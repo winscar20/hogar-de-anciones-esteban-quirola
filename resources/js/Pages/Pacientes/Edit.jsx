@@ -17,7 +17,7 @@ const Edit = ({ paciente }) => {
         cedula: paciente.cedula || "",
         estado_civil: paciente.estado_civil || "",
         ocupacion: paciente.ocupacion || "",
-        institucion: paciente.institucion || "",
+        telefono: paciente.telefono || "",
         motivo_ingreso: paciente.motivo_ingreso || "",
         antecedentes_patologicos: paciente.antecedentes_patologicos || "",
         enfermedad_actual: paciente.enfermedad_actual || "",
@@ -27,7 +27,6 @@ const Edit = ({ paciente }) => {
     const handleSearch = async (e) => {
         const query = e.target.value;
         setSearchText(query);
-        console.log(query);
         if (query.length > 2) {
             // Realiza la búsqueda de usuarios
             const response = await fetch(`/api/users/search?query=${query}`);
@@ -40,7 +39,7 @@ const Edit = ({ paciente }) => {
     };
     const updatePaciente = (e) => {
         e.preventDefault();
-        put(route("pacientes.update", paciente.id), {
+        put(route("residentes.update", paciente.id), {
             preserveScroll: true,
         });
     };
@@ -226,22 +225,22 @@ const Edit = ({ paciente }) => {
                                 />
                             </div>
 
-                            {/* Campo Institución */}
+                            {/* Campo Telefono */}
                             <div>
                                 <InputLabel className="block text-gray-700">
-                                    Institución
+                                    Telefono
                                 </InputLabel>
                                 <TextInput
                                     type="text"
-                                    name="institucion"
-                                    value={data.institucion || ""}
+                                    name="telefono"
+                                    value={data.telefono || ""}
                                     onChange={(e) =>
-                                        setData("institucion", e.target.value)
+                                        setData("telefono", e.target.value)
                                     }
                                     className="w-full border rounded px-3 py-2"
                                 />
                                 <InputError
-                                    message={errors.institucion}
+                                    message={errors.telefono}
                                     className="mt-2"
                                 />
                             </div>

@@ -6,7 +6,7 @@ use App\Models\Paciente;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-
+use Illuminate\Support\Facades\Lang;
 class PacienteController extends Controller
 {
     /**
@@ -26,7 +26,7 @@ class PacienteController extends Controller
             'pacientes' => $pacientes,
             'filters' => [
                 'search' => $search,
-            ],
+            ]
         ]);
     }
 
@@ -49,7 +49,7 @@ class PacienteController extends Controller
             'cedula' => 'required|string|max:10',
             'estado_civil' => 'required|string|max:255',
             'ocupacion' => 'string|max:255',
-            'institucion' => 'string|max:255',
+            'telefono' => 'required|numeric|digits_between:10,12',
             'responsable' => 'required|numeric',
             'motivo_ingreso' => 'required|string',
             'antecedentes_patologicos' => 'string',
@@ -61,7 +61,7 @@ class PacienteController extends Controller
             'cedula' => $validated['cedula'],
             'estado_civil' => $validated['estado_civil'],
             'ocupacion' => $validated['ocupacion'] ?? null,
-            'institucion' => $validated['institucion'] ?? null,
+            'telefono' => $validated['telefono'] ?? null,
             'responsable' => $validated['responsable'],
             'motivo_ingreso' => $validated['motivo_ingreso'],
             'antecedentes_patologicos' => $validated['antecedentes_patologicos'] ?? null,
@@ -96,7 +96,7 @@ class PacienteController extends Controller
             'cedula' => 'required|string|max:10',
             'estado_civil' => 'required|string|max:255',
             'ocupacion' => 'string|max:255',
-            'institucion' => 'string|max:255',
+            'telefono' => 'required|numeric|digits_between:10,12',
             'responsable' => 'required|numeric',
             'motivo_ingreso' => 'required|string',
             'antecedentes_patologicos' => 'string',
@@ -109,7 +109,7 @@ class PacienteController extends Controller
             'cedula' => $validated['cedula'],
             'estado_civil' => $validated['estado_civil'],
             'ocupacion' => $validated['ocupacion'] ?? null,
-            'institucion' => $validated['institucion'] ?? null,
+            'telefono' => $validated['telefono'] ?? null,
             'responsable' => $validated['responsable'],
             'motivo_ingreso' => $validated['motivo_ingreso'],
             'antecedentes_patologicos' => $validated['antecedentes_patologicos'] ?? null,

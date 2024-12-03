@@ -16,7 +16,7 @@ class Paciente extends Model
         'cedula',
         'estado_civil',
         'ocupacion',
-        'institucion',
+        'telefono',
         'responsable',
         'motivo_ingreso',
         'antecedentes_patologicos',
@@ -31,4 +31,9 @@ class Paciente extends Model
     public function notasEnfermeria() {
         return $this->hasMany(NotaEnfermeria::class, 'id_paciente', 'id');
     }
+
+    public function setTelefonoAttribute($value)
+{
+    $this->attributes['telefono'] = preg_replace('/[^0-9]/', '', $value);
+}
 }
