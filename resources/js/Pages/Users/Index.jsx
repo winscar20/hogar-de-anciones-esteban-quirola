@@ -4,6 +4,7 @@ import { Head } from "@inertiajs/react";
 import { Link, usePage, router } from "@inertiajs/react";
 import TablaUsuarios from "./Partials/TablaUsuarios";
 import { toast } from "react-toastify";
+import { hasPermission } from "@/utils";
 
 const Index = () => {
     const { users, flash, filters } = usePage().props;
@@ -130,21 +131,23 @@ const Index = () => {
                         </span>
                     </div>
                     <div className="relative m-[6px] mb-3 float-right hidden sm:block">
-                        {loggedUser.role.name === "SuperAdmin" &&
-                            loggedUser.role.name === "Administrativo" && (
-                                <Link
-                                    href={route("users.create")}
-                                    className="
+                        {hasPermission(
+                            loggedUser.role.name,
+                            "crear_usuarios"
+                        ) && (
+                            <Link
+                                href={route("users.create")}
+                                className="
                                     px-4
                                     py-3
                                     rounded-full
                                     shadow
                                     bg-mainbutton
                                     "
-                                >
-                                    +
-                                </Link>
-                            )}
+                            >
+                                +
+                            </Link>
+                        )}
                     </div>
                     {isLoading ? (
                         <div className="flex justify-center items-center h-40">

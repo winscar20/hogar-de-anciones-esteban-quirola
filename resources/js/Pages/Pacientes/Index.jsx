@@ -4,6 +4,7 @@ import { Head } from "@inertiajs/react";
 import { Link, usePage, router } from "@inertiajs/react";
 import TablaPacientes from "./Partials/TablaPacientes";
 import { toast } from "react-toastify";
+import { hasPermission } from "@/utils";
 
 const Index = () => {
     const { pacientes, flash, filters } = usePage().props;
@@ -130,18 +131,23 @@ const Index = () => {
                         </span>
                     </div>
                     <div className="relative m-[6px] mb-3 float-right hidden sm:block">
-                        <Link
-                            href={route("residentes.create")}
-                            className="
+                        {hasPermission(
+                            loggedUser.role.name,
+                            "crear_residentes"
+                        ) && (
+                            <Link
+                                href={route("residentes.create")}
+                                className="
                                     px-4
                                     py-3
                                     rounded-full
                                     shadow
                                     bg-mainbutton
                                     "
-                        >
-                            +
-                        </Link>
+                            >
+                                +
+                            </Link>
+                        )}
                     </div>
 
                     {isLoading ? (

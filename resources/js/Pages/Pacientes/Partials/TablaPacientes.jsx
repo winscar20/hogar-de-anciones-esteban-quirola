@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, usePage, router } from "@inertiajs/react";
 import { toast } from "react-toastify";
 import ModalCreateForm from "@/Components/ModalCreateForm";
+import { hasPermission } from "@/utils";
 
 const TablaPacientes = ({ pacientes, filters }) => {
     const loggedUser = usePage().props.auth.user;
@@ -108,29 +109,35 @@ const TablaPacientes = ({ pacientes, filters }) => {
                                 </td>
 
                                 <td className="px-6 py-4">
-                                    <Link
-                                        href={route(
-                                            "residentes.edit",
-                                            paciente.id
-                                        )}
-                                        className="text-blue-600 mr-2"
-                                        tooltip="Editar Residente"
-                                    >
-                                        <i
-                                            className="fa-solid fa-pen-to-square"
-                                            aria-label="Editar Residente"
-                                            alt="Editar Residente"
-                                        ></i>{" "}
-                                        Editar
-                                    </Link>
-                                    <span className="text-sm text-gray-300">
-                                        |
-                                    </span>
-                                    {(loggedUser.role.name === "Enfermeria" ||
-                                        loggedUser.role.name ===
-                                            "Administrativo" ||
-                                        loggedUser.role.name ===
-                                            "SuperAdmin") && (
+                                    {hasPermission(
+                                        loggedUser.role.name,
+                                        "editar_residentes"
+                                    ) && (
+                                        <>
+                                            <Link
+                                                href={route(
+                                                    "residentes.edit",
+                                                    paciente.id
+                                                )}
+                                                className="text-blue-600 mr-2"
+                                                tooltip="Editar Residente"
+                                            >
+                                                <i
+                                                    className="fa-solid fa-pen-to-square"
+                                                    aria-label="Editar Residente"
+                                                    alt="Editar Residente"
+                                                ></i>{" "}
+                                                Editar
+                                            </Link>
+                                            <span className="text-sm text-gray-300">
+                                                |
+                                            </span>
+                                        </>
+                                    )}
+                                    {hasPermission(
+                                        loggedUser.role.name,
+                                        "crear_notas_enfermeria"
+                                    ) && (
                                         <>
                                             <button
                                                 className="text-blue-500 hover:underline"
@@ -141,20 +148,22 @@ const TablaPacientes = ({ pacientes, filters }) => {
                                                 <i className="fa-solid fa-notes-medical"></i>{" "}
                                                 Nota de Enfermeria
                                             </button>
-                                            <span className="text-sm text-gray-300">
-                                                |
-                                            </span>
                                         </>
                                     )}
-                                    <button
-                                        onClick={() =>
-                                            handleDelete(paciente.id)
-                                        }
-                                        className="text-red-600 ml-2"
-                                    >
-                                        <i className="fa-solid fa-trash"></i>{" "}
-                                        Eliminar
-                                    </button>
+                                    {hasPermission(
+                                        loggedUser.role.name,
+                                        "eliminar_residentes"
+                                    ) && (
+                                        <button
+                                            onClick={() =>
+                                                handleDelete(paciente.id)
+                                            }
+                                            className="text-red-600 ml-2"
+                                        >
+                                            <i className="fa-solid fa-trash"></i>{" "}
+                                            Eliminar
+                                        </button>
+                                    )}
                                 </td>
                             </tr>
                         ))

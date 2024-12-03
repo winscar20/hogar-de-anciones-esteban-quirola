@@ -33,7 +33,7 @@ const ModalCreateForm = ({ isOpen, onClose, title, nota }) => {
         post(route("notas-enfermeria.store"), {
             data: {
                 ...data,
-                fecha: formattedDate, // Usar la fecha formateada
+                fecha: formattedDate,
             },
             onSuccess: () => {
                 setData("nota", "");
