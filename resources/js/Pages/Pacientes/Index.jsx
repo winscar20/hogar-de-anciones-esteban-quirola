@@ -20,7 +20,7 @@ const Index = () => {
         ) {
             const handler = setTimeout(() => {
                 router.get(
-                    route("pacientes.index"),
+                    route("residentes.index"),
                     { search: searchQuery, page: pacientes.current_page || 1 },
                     { preserveState: true }
                 );
@@ -38,7 +38,7 @@ const Index = () => {
         // Si el campo está vacío, reinicia a la página 1
         if (value.trim() === "") {
             router.get(
-                route("pacientes.index"),
+                route("residentes.index"),
                 { page: 1 },
                 { preserveState: true }
             );
@@ -74,7 +74,7 @@ const Index = () => {
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Listado de Pacientes
+                    Listado de Residentes
                 </h2>
             }
         >
@@ -85,7 +85,7 @@ const Index = () => {
                     <div className="relative m-[2px] mb-3 mr-5 float-left">
                         <form className="relative m-[2px] mb-3 mr-5 float-left">
                             <label htmlFor="inputSearch" className="sr-only">
-                                Buscar Paciente
+                                Buscar Residente
                             </label>
                             <input
                                 id="inputSearch"
@@ -131,7 +131,7 @@ const Index = () => {
                     </div>
                     <div className="relative m-[6px] mb-3 float-right hidden sm:block">
                         <Link
-                            href={route("pacientes.create")}
+                            href={route("residentes.create")}
                             className="
                                     px-4
                                     py-3

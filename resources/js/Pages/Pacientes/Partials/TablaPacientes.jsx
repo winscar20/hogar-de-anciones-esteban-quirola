@@ -110,16 +110,16 @@ const TablaPacientes = ({ pacientes, filters }) => {
                                 <td className="px-6 py-4">
                                     <Link
                                         href={route(
-                                            "pacientes.edit",
+                                            "residentes.edit",
                                             paciente.id
                                         )}
                                         className="text-blue-600 mr-2"
-                                        tooltip="Editar Paciente"
+                                        tooltip="Editar Residente"
                                     >
                                         <i
                                             className="fa-solid fa-pen-to-square"
-                                            aria-label="Editar Paciente"
-                                            alt="Editar Paciente"
+                                            aria-label="Editar Residente"
+                                            alt="Editar Residente"
                                         ></i>{" "}
                                         Editar
                                     </Link>

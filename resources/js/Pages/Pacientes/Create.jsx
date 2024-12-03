@@ -40,7 +40,7 @@ const Create = () => {
     const savePaciente = (e) => {
         e.preventDefault();
 
-        post(route("pacientes.store"), {
+        post(route("residentes.store"), {
             onSuccess: () => {
                 setData("nombres", "");
                 setData("apellidos", "");
@@ -70,7 +70,7 @@ const Create = () => {
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Crear Paciente
+                    Crear Residente
                 </h2>
             }
         >
@@ -314,7 +314,7 @@ const Create = () => {
                         <hr />
                         <div className="mt-4">
                             <Link
-                                href={route("pacientes.index")}
+                                href={route("residentes.index")}
                                 className="bg-gray-600 inline-flex items-center rounded-md border border-transparent px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-gray-400 "
                             >
                                 Cancelar
@@ -323,7 +323,7 @@ const Create = () => {
                                 className="ms-4"
                                 disabled={processing}
                             >
-                                Guardar Paciente
+                                Guardar Residente
                             </PrimaryButton>
                         </div>
                     </div>

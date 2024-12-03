@@ -63,11 +63,11 @@ const Edit = ({ paciente }) => {
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Modificar Paciente
+                    Modificar Residente
                 </h2>
             }
         >
-            <Head title="Crear Paciente" />
+            <Head title="Crear Residente" />
             <form onSubmit={updatePaciente}>
                 <div className="p-12">
                     <div className="overflow-x-auto bg-white p-4 max-w-screen-xl mx-auto">
@@ -307,7 +307,7 @@ const Edit = ({ paciente }) => {
                         <hr />
                         <div className="mt-4">
                             <Link
-                                href={route("pacientes.index")}
+                                href={route("residentes.index")}
                                 className="bg-gray-600 inline-flex items-center rounded-md border border-transparent px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-gray-400 "
                             >
                                 Cancelar
@@ -316,7 +316,7 @@ const Edit = ({ paciente }) => {
                                 className="ms-4"
                                 disabled={processing}
                             >
-                                Guardar Paciente
+                                Guardar Residente
                             </PrimaryButton>
                         </div>
                     </div>

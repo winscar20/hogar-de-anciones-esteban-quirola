@@ -67,7 +67,7 @@ class PacienteController extends Controller
             'antecedentes_patologicos' => $validated['antecedentes_patologicos'] ?? null,
             'enfermedad_actual' => $validated['enfermedad_actual'],
         ]);
-        return redirect()->route('pacientes.index')->with('success', 'Usuario creado exitosamente.');
+        return redirect()->route('residentes.index')->with('success', 'Usuario creado exitosamente.');
     }
 
 
@@ -116,7 +116,7 @@ class PacienteController extends Controller
             'enfermedad_actual' => $validated['enfermedad_actual'],
         ]);
 
-        return redirect()->route('pacientes.index')->with('success', 'Paciente actualizado exitosamente.');
+        return redirect()->route('residentes.index')->with('success', 'Paciente actualizado exitosamente.');
     }
 
     /**
@@ -126,7 +126,7 @@ class PacienteController extends Controller
     {
         $paciente = Paciente::findOrFail($id);
         $paciente->delete();
-        return redirect()->route('pacientes.index')->with('success', 'Paciente eliminado exitosamente.');
+        return redirect()->route('residentes.index')->with('success', 'Paciente eliminado exitosamente.');
     }
 
     public function search(Request $request) {

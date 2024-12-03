@@ -36,9 +36,9 @@ Route::middleware('auth')->group(function () {
     });
 
     // Pacientes
-    // Route::get('/pacientes', [PacienteController::class, 'index'])->name('pacientes.index');
-    Route::resource('/pacientes', PacienteController::class);
-    Route::get('api/pacientes/search', [PacienteController::class, 'search'])->name('pacientes.search');
+    // Route::get('/pacientes', [PacienteController::class, 'index'])->name('residentes.index');
+    Route::resource('/residentes', PacienteController::class);
+    Route::get('api/residentes/search', [PacienteController::class, 'search'])->name('pacientes.search');
     Route::resource('/notas-enfermeria', NotaEnfermeriaController::class);
 });
 

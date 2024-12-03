@@ -38,10 +38,10 @@ export default function Authenticated({ header, children }) {
                                     </NavLink>
                                 )}
                                 <NavLink
-                                    href={route("pacientes.index")}
+                                    href={route("residentes.index")}
                                     active={route().current("pacientes")}
                                 >
-                                    Pacientes
+                                    Residentes
                                 </NavLink>
                                 <NavLink
                                     href={route("notas-enfermeria.index")}
