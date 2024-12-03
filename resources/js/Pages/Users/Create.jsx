@@ -13,7 +13,7 @@ const Create = () => {
         name: "",
         email: "",
         phone: "",
-        role: 0,
+        role: "",
         password: "",
         password_confirmation: "",
         is_active: true,
@@ -138,6 +138,9 @@ const Create = () => {
                                 }
                                 required
                             >
+                                <option key="0" value={0}>
+                                    Seleccione
+                                </option>
                                 {roles
                                     .filter((rol) => {
                                         if (
@@ -173,6 +176,12 @@ const Create = () => {
                                         </option>
                                     ))}
                             </select>
+                            <InputError
+                                message={
+                                    errors.role && "Debe seleccionar un Rol"
+                                }
+                                className="mt-2"
+                            />
                         </div>
 
                         <div className="mb-4">
