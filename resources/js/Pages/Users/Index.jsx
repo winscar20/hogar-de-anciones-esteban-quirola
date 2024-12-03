@@ -130,18 +130,21 @@ const Index = () => {
                         </span>
                     </div>
                     <div className="relative m-[6px] mb-3 float-right hidden sm:block">
-                        <Link
-                            href={route("users.create")}
-                            className="
+                        {loggedUser.role.name === "SuperAdmin" &&
+                            loggedUser.role.name === "Administrativo" && (
+                                <Link
+                                    href={route("users.create")}
+                                    className="
                                     px-4
                                     py-3
                                     rounded-full
                                     shadow
                                     bg-mainbutton
                                     "
-                        >
-                            +
-                        </Link>
+                                >
+                                    +
+                                </Link>
+                            )}
                     </div>
                     {isLoading ? (
                         <div className="flex justify-center items-center h-40">
