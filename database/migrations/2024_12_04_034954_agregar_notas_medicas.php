@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_paciente');
             $table->unsignedBigInteger('id_user');
             $table->timestamp('fecha');
-            $table->text('nota_evaluaciion');
+            $table->text('nota_evaluacion');
             $table->text('prescripcion_medica');
             $table->timestamps();
 
