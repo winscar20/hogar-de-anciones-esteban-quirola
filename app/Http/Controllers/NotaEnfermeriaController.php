@@ -49,6 +49,7 @@ class NotaEnfermeriaController extends Controller
             'fecha' => 'required|date',
             'nota' => 'required|string',
             'user' => 'required|numeric',
+            'redirect' => 'nullable|string',
         ]);
         $validate['fecha'] = Carbon::parse($validate['fecha'])->format('Y-m-d H:i:s');
 
@@ -58,6 +59,10 @@ class NotaEnfermeriaController extends Controller
             'nota' => $validate['nota'],
             'id_user' => $validate['user'],
         ]);
+
+        if (array_key_exists('redirect', $validate) && $validate['redirect']) {
+            return redirect()->route($validate['redirect'])->with('success', 'Nota de enfermería creada correctamente');
+        }
         return redirect()->route('notas-enfermeria.index')->with('success', 'Nota de enfermería creada correctamente');
     }
 

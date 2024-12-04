@@ -16,6 +16,8 @@ class PacienteController extends Controller
     {
         $search = $request->input('search');
         $pacientes = Paciente::with('responsable')
+        ->withCount('notasMedicas')
+        ->withCount('notasEnfermeria')
         ->when($search, function ($query, $search) {
             return $query->where('nombres', 'LIKE', "%$search%")
                 ->orWhere('apellidos', 'LIKE', "%$search%")

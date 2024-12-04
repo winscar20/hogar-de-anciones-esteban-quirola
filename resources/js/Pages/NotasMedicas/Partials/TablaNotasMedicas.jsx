@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, usePage, router } from "@inertiajs/react";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
-import ModalCreateForm from "@/Components/ModalCreateForm";
+import ModalCreateNotaMedica from "@/Components/ModalCreateNotaMedica";
 import { hasPermission } from "@/utils";
 const TablaNotasMedicas = ({ notas, filters }) => {
     const loggedUser = usePage().props.auth.user;
@@ -55,12 +55,12 @@ const TablaNotasMedicas = ({ notas, filters }) => {
     return (
         <>
             {isModalOpen && (
-                <ModalCreateForm
+                <ModalCreateNotaMedica
                     isOpen={isModalOpen}
                     onClose={closeModal}
                     title={"Agregar Nota Médica a Residente"}
                     nota={nota}
-                ></ModalCreateForm>
+                ></ModalCreateNotaMedica>
             )}
             <div className="container mx-auto px-4 mt-16">
                 {notas.data.length > 0 ? (
@@ -101,17 +101,31 @@ const TablaNotasMedicas = ({ notas, filters }) => {
                                 </div>
                             </div>
                             <div className="mt-4 border-b-2 pb-4">
-                                <h2 className="text-lg font-semibold">Nota:</h2>
+                                <h2 className="text-lg font-semibold">
+                                    Evaluacion:
+                                </h2>
                                 <p
                                     className="text-gray-600"
                                     dangerouslySetInnerHTML={{
-                                        __html: nota.nota,
+                                        __html: nota.nota_evaluacion,
+                                    }}
+                                ></p>
+                            </div>
+
+                            <div className="mt-4 border-b-2 pb-4">
+                                <h2 className="text-lg font-semibold">
+                                    Prescripcion Médica:
+                                </h2>
+                                <p
+                                    className="text-gray-600"
+                                    dangerouslySetInnerHTML={{
+                                        __html: nota.prescripcion_medica,
                                     }}
                                 ></p>
                             </div>
                             {(hasPermission(
                                 loggedUser.role.name,
-                                "ver_notas_medicas"
+                                "crear_notas_medicas"
                             ) && (
                                 <div className="flex justify-end mt-4 space-x-4">
                                     <button
@@ -129,7 +143,7 @@ const TablaNotasMedicas = ({ notas, filters }) => {
                                     <Link
                                         className="text-blue-500 hover:underline"
                                         href={route(
-                                            "notas-enfermeria.edit",
+                                            "notas-medicas.edit",
                                             nota.id
                                         )}
                                     >

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, usePage, router } from "@inertiajs/react";
 import { toast } from "react-toastify";
 import ModalCreateForm from "@/Components/ModalCreateForm";
+import ModalCreateNotaMedica from "@/Components/ModalCreateNotaMedica";
 import { hasPermission } from "@/utils";
 
 const TablaPacientes = ({ pacientes, filters }) => {
@@ -10,12 +11,18 @@ const TablaPacientes = ({ pacientes, filters }) => {
     const { flash } = usePage().props;
     const userLogged = usePage().props.auth.user;
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalNotaMedicaOpen, setIsModalNotaMedicaOpen] = useState(false);
     const [nota, setNota] = useState({});
 
     const openModal = () => setIsModalOpen(true);
+    const openModalNotaMedica = () => setIsModalNotaMedicaOpen(true);
     const closeModal = () => {
         setNota({});
         setIsModalOpen(false);
+    };
+    const closeModalNota = () => {
+        setNota({});
+        setIsModalNotaMedicaOpen(false);
     };
 
     const handleDelete = (id) => {
@@ -50,11 +57,15 @@ const TablaPacientes = ({ pacientes, filters }) => {
         }
     };
 
-    const handleModalOpen = (paciente) => {
+    const handleModalOpen = (paciente, tipo = null) => {
         setNota({
             paciente,
         });
-        openModal();
+        if (tipo === "medica") {
+            openModalNotaMedica();
+        } else {
+            openModal();
+        }
     };
     return (
         <>
@@ -64,7 +75,17 @@ const TablaPacientes = ({ pacientes, filters }) => {
                     onClose={closeModal}
                     title={"Agregar Nota a Paciente"}
                     nota={nota}
+                    redirectTo={"residentes.index"}
                 ></ModalCreateForm>
+            )}
+            {isModalNotaMedicaOpen && (
+                <ModalCreateNotaMedica
+                    isOpen={isModalNotaMedicaOpen}
+                    onClose={closeModalNota}
+                    title={"Agregar Nota Médica a Residente"}
+                    nota={nota}
+                    redirectTo={"residentes.index"}
+                ></ModalCreateNotaMedica>
             )}
             <table className="min-w-full text-left text-sm whitespace-nowrap">
                 <thead className="uppercase tracking-wider border-b-2 dark:border-neutral-600">
@@ -146,7 +167,31 @@ const TablaPacientes = ({ pacientes, filters }) => {
                                                 }
                                             >
                                                 <i className="fa-solid fa-notes-medical"></i>{" "}
-                                                Nota de Enfermeria
+                                                Nota de Enfermeria (
+                                                {
+                                                    paciente.notas_enfermeria_count
+                                                }
+                                                )
+                                            </button>
+                                        </>
+                                    )}
+                                    {hasPermission(
+                                        loggedUser.role.name,
+                                        "crear_notas_medicas"
+                                    ) && (
+                                        <>
+                                            <button
+                                                className="text-blue-500 hover:underline"
+                                                onClick={() =>
+                                                    handleModalOpen(
+                                                        paciente,
+                                                        "medica"
+                                                    )
+                                                }
+                                            >
+                                                <i className="fa-solid fa-notes-medical"></i>{" "}
+                                                Nota Médica (
+                                                {paciente.notas_medicas_count})
                                             </button>
                                         </>
                                     )}
