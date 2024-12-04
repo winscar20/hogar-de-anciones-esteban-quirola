@@ -23,7 +23,7 @@ class NotaEnfermeriaController extends Controller
                     ->orWhere('apellidos', 'LIKE', "%$search%")
                     ->orWhere('cedula', 'LIKE', "%$search%");
             })
-            ->orderBy('fecha', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->paginate(10);
 
         return Inertia::render('NotasEnfermeria/Index', [
@@ -34,9 +34,6 @@ class NotaEnfermeriaController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return Inertia::render('NotasEnfermeria/Create');
@@ -64,17 +61,6 @@ class NotaEnfermeriaController extends Controller
         return redirect()->route('notas-enfermeria.index')->with('success', 'Nota de enfermería creada correctamente');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $nota_enfermeria = NotaEnfermeria::with('paciente')->with('user')->findOrFail($id);
