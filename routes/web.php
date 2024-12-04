@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\NotaEnfermeriaController;
+use App\Http\Controllers\NotaMedicaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -35,11 +36,10 @@ Route::middleware('auth')->group(function () {
         Route::get('api/users/search', [UserController::class, 'search'])->name('users.search');
     });
 
-    // Pacientes
-    // Route::get('/pacientes', [PacienteController::class, 'index'])->name('residentes.index');
     Route::resource('/residentes', PacienteController::class);
     Route::get('api/residentes/search', [PacienteController::class, 'search'])->name('pacientes.search');
     Route::resource('/notas-enfermeria', NotaEnfermeriaController::class);
+    Route::resource('/notas-medicas', NotaMedicaController::class);
 });
 
 require __DIR__.'/auth.php';

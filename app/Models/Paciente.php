@@ -32,8 +32,12 @@ class Paciente extends Model
         return $this->hasMany(NotaEnfermeria::class, 'id_paciente', 'id');
     }
 
+    public function notasMedicas() {
+        return $this->hasMany(NotaMedica::class, 'id_paciente', 'id');
+    }
+
     public function setTelefonoAttribute($value)
-{
-    $this->attributes['telefono'] = preg_replace('/[^0-9]/', '', $value);
-}
+    {
+        $this->attributes['telefono'] = preg_replace('/[^0-9]/', '', $value);
+    }
 }

@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import TablaNotasMedicas from "./Partials/TablaNotasMedicas";
 import { Link, usePage, router } from "@inertiajs/react";
-import TablaUsuarios from "./Partials/TablaUsuarios";
 import { toast } from "react-toastify";
 import { hasPermission } from "@/utils";
-
 const Index = () => {
-    const { users, flash, filters } = usePage().props;
     const loggedUser = usePage().props.auth.user;
+    const { notas, flash, filters } = usePage().props;
     const [searchQuery, setSearchQuery] = useState(filters.search || "");
     const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         setSearchQuery(filters.search || "");
     }, []);
@@ -21,8 +21,8 @@ const Index = () => {
         ) {
             const handler = setTimeout(() => {
                 router.get(
-                    route("users.index"),
-                    { search: searchQuery, page: users.current_page || 1 },
+                    route("notas-medicas.index"),
+                    { search: searchQuery, page: notas.current_page || 1 },
                     { preserveState: true }
                 );
             }, 500);
@@ -37,13 +37,12 @@ const Index = () => {
 
         if (value.trim() === "") {
             router.get(
-                route("users.index"),
+                route("notas-medicas.index"),
                 { page: 1 },
                 { preserveState: true }
             );
         }
     };
-
     useEffect(() => {
         if (flash?.success) {
             toast.success(flash.success, {
@@ -69,28 +68,30 @@ const Index = () => {
             });
         }
     }, [flash]);
-
     return (
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Listado de Usuarios
+                    Notas Médicas
                 </h2>
             }
         >
-            <Head title="Usuarios" />
+            <Head title="Notas de Enfermeria" />
 
             <div className="p-12">
                 <div className="overflow-x-auto bg-white p-4 max-w-screen-xl mx-auto rounded-lg">
                     <div className="relative m-[2px] mb-3 mr-5 float-left">
-                        <form className="relative m-[2px] mb-3 mr-5 float-left">
+                        <form
+                            onSubmit={(e) => e.preventDefault()}
+                            className="relative m-[2px] mb-3 mr-5 float-left"
+                        >
                             <label htmlFor="inputSearch" className="sr-only">
-                                Buscar
+                                Buscar Paciente
                             </label>
                             <input
                                 id="inputSearch"
                                 type="text"
-                                placeholder="Buscar..."
+                                placeholder="Nombre o cédula del paciente..."
                                 value={searchQuery}
                                 onChange={handleInputChange}
                                 className="block w-64 rounded-lg border py-2 pl-10 pr-4 text-sm focus:border-green-400 focus:outline-none focus:ring-1 focus:ring-blue-400"
@@ -129,13 +130,13 @@ const Index = () => {
                             </svg>
                         </span>
                     </div>
-                    <div className="relative m-[6px] mb-3 float-right hidden sm:block">
-                        {hasPermission(
-                            loggedUser.role.name,
-                            "crear_usuarios"
-                        ) && (
+                    {hasPermission(
+                        loggedUser.role.name,
+                        "crear_notas_medicas"
+                    ) && (
+                        <div className="relative m-[6px] mb-3 float-right hidden sm:block">
                             <Link
-                                href={route("users.create")}
+                                href={route("notas-medicas.create")}
                                 className="
                                     px-4
                                     py-3
@@ -146,19 +147,18 @@ const Index = () => {
                             >
                                 +
                             </Link>
-                        )}
-                    </div>
+                        </div>
+                    )}
                     {isLoading ? (
                         <div className="flex justify-center items-center h-40">
                             <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
                         </div>
                     ) : (
-                        <TablaUsuarios users={users} filters={filters} />
+                        <TablaNotasMedicas notas={notas} filters={filters} />
                     )}
                 </div>
             </div>
         </AuthenticatedLayout>
     );
 };
-
 export default Index;
