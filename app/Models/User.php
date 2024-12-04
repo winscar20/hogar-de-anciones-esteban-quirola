@@ -69,4 +69,8 @@ class User extends Authenticatable
     public function notasEnfermeria() {
         return $this->hasMany(NotaEnfermeria::class, 'id_user', 'id');
     }
+
+    public function notasMedicas() {
+        return $this->hasMany(NotaMedica::class, 'id_user', 'id');
+    }
 }

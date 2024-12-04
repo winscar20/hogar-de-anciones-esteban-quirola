@@ -34,7 +34,6 @@ const Index = () => {
         const value = e.target.value;
         setSearchQuery(value);
 
-        // Si el campo está vacío, reinicia a la página 1
         if (value.trim() === "") {
             router.get(
                 route("notas-enfermeria.index"),

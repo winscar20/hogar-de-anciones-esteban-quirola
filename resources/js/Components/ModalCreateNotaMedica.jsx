@@ -7,7 +7,13 @@ import DatePicker from "react-datepicker";
 import { Editor } from "@tinymce/tinymce-react";
 import { format } from "date-fns";
 import { useForm, usePage, Link } from "@inertiajs/react";
-const ModalCreateForm = ({ isOpen, onClose, title, nota, redirectTo = "" }) => {
+const ModalCreateNotaMedica = ({
+    isOpen,
+    onClose,
+    title,
+    nota,
+    redirectTo = "",
+}) => {
     if (!isOpen) {
         return null;
     }
@@ -16,7 +22,8 @@ const ModalCreateForm = ({ isOpen, onClose, title, nota, redirectTo = "" }) => {
     const { data, setData, post, errors, processing, reset } = useForm({
         paciente: nota.paciente.id || "",
         fecha: new Date(),
-        nota: "",
+        nota_evaluacion: "",
+        prescripcion_medica: "",
         user: loggedUser.id,
         redirect: redirectTo,
     });
@@ -31,13 +38,14 @@ const ModalCreateForm = ({ isOpen, onClose, title, nota, redirectTo = "" }) => {
     const saveNota = (e) => {
         e.preventDefault();
         const formattedDate = format(data.fecha, "yyyy-MM-dd HH:mm:ss");
-        post(route("notas-enfermeria.store"), {
+        post(route("notas-medicas.store"), {
             data: {
                 ...data,
                 fecha: formattedDate,
             },
             onSuccess: () => {
-                setData("nota", "");
+                setData("nota_evaluacion", "");
+                setData("prescripcion_medica", "");
                 setData("fecha", new Date());
                 onClose();
             },
@@ -47,24 +55,25 @@ const ModalCreateForm = ({ isOpen, onClose, title, nota, redirectTo = "" }) => {
         };
     };
     const handleClose = () => {
-        setData("nota", "");
+        setData("nota_evaluacion", "");
+        setData("prescripcion_medica", "");
         setData("fecha", new Date());
         onClose();
     };
     return (
         <>
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                <div className="bg-white rounded-lg p-4 w-128">
+                <div className="bg-white rounded-lg p-4 w-128 max-h-screen overflow-y-auto">
                     <h2 className="text-xl font-semibold mb-4">
-                        {title || "Crear Nota"}
+                        {title || "Crear Nota Médica"}
                     </h2>
 
                     <form onSubmit={saveNota}>
                         <div className="p-12">
-                            <div className="overflow-x-auto bg-white p-4 max-w-screen-xl mx-auto">
+                            <div className="overflow-auto  bg-white p-4 max-w-screen-xl mx-auto">
                                 <div className="mt-4 bt-4">
                                     <InputLabel className="block text-gray-700 font-medium mb-2">
-                                        Paciente:
+                                        Residente:
                                     </InputLabel>
                                     <TextInput
                                         type="text"
@@ -102,7 +111,7 @@ const ModalCreateForm = ({ isOpen, onClose, title, nota, redirectTo = "" }) => {
                                     </div>
                                     <div className="col-span-3">
                                         <InputLabel className="block text-gray-700">
-                                            Nota:
+                                            Evaluación:
                                         </InputLabel>
                                         <Editor
                                             apiKey="4e42yssu698u0uy1i5qx6ah0gx02y6hsi9nn34ljz0joxuxa"
@@ -112,13 +121,46 @@ const ModalCreateForm = ({ isOpen, onClose, title, nota, redirectTo = "" }) => {
                                                 toolbar:
                                                     "undo redo | bold italic underline",
                                             }}
-                                            value={data.nota || ""}
+                                            value={data.nota_evaluacion || ""}
                                             onEditorChange={(content) =>
-                                                setData("nota", content)
+                                                setData(
+                                                    "nota_evaluacion",
+                                                    content
+                                                )
                                             }
                                         />
                                         <InputError
-                                            message={errors.nota}
+                                            message={errors.nota_evaluacion}
+                                            className="mt-2"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-4 gap-6 mb-6">
+                                    <div className="col-span-1"></div>
+                                    <div className="col-span-3">
+                                        <InputLabel className="block text-gray-700">
+                                            Prescripción Médica:
+                                        </InputLabel>
+                                        <Editor
+                                            apiKey="4e42yssu698u0uy1i5qx6ah0gx02y6hsi9nn34ljz0joxuxa"
+                                            init={{
+                                                height: 250,
+                                                menubar: false,
+                                                toolbar:
+                                                    "undo redo | bold italic underline",
+                                            }}
+                                            value={
+                                                data.prescripcion_medica || ""
+                                            }
+                                            onEditorChange={(content) =>
+                                                setData(
+                                                    "prescripcion_medica",
+                                                    content
+                                                )
+                                            }
+                                        />
+                                        <InputError
+                                            message={errors.prescripcion_medica}
                                             className="mt-2"
                                         />
                                     </div>
@@ -157,4 +199,4 @@ const ModalCreateForm = ({ isOpen, onClose, title, nota, redirectTo = "" }) => {
     );
 };
 
-export default ModalCreateForm;
+export default ModalCreateNotaMedica;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
@@ -7,29 +7,31 @@ import DatePicker from "react-datepicker";
 import { Editor } from "@tinymce/tinymce-react";
 import { format } from "date-fns";
 import { useForm, usePage, Link } from "@inertiajs/react";
-const CreateForm = ({}) => {
+const EditForm = ({ nota }) => {
     const loggedUser = usePage().props.auth.user;
     const [searchText, setSearchText] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [createPaciente, setCreatePaciente] = useState(false);
-    const { data, setData, post, errors, processing, reset } = useForm({
-        paciente: "",
-        fecha: new Date(),
-        nota: "",
-        user: loggedUser.id,
+    const { data, setData, put, errors, processing, reset } = useForm({
+        paciente: nota.paciente.id || "",
+        fecha: new Date(nota.fecha) || new Date(),
+        nota_evaluacion: nota.nota_evaluacion || "",
+        prescripcion_medica: nota.prescripcion_medica || "",
+        user: nota.user.id || loggedUser.id,
     });
-    const saveNota = (e) => {
+    const updateNota = (e) => {
         e.preventDefault();
         const formattedDate = format(data.fecha, "yyyy-MM-dd HH:mm:ss");
-        post(route("notas-enfermeria.store"), {
+        put(route("notas-medicas.update", nota.id), {
             data: {
                 ...data,
                 fecha: formattedDate, // Usar la fecha formateada
             },
             onSuccess: () => {
-                setData("nota", "");
-                setData("fecha", new Date());
-                setData("paciente", "");
+                setData("nota_evaluacion", nota.nota_evaluacion);
+                setData("nota_evaluacion", nota.nota_evaluacion);
+                setData("prescripcion_medica", nota.prescripcion_medica);
+                setData("paciente", nota.paciente.id);
             },
         });
         onErrors: (errors) => {
@@ -61,14 +63,22 @@ const CreateForm = ({}) => {
         setSearchResults([]);
         setCreatePaciente(false);
     };
+
+    useEffect(() => {
+        if (nota.paciente) {
+            setSearchText(
+                `${nota.paciente.nombres}  ${nota.paciente.apellidos} (${nota.paciente.cedula})`
+            );
+        }
+    }, [nota]);
     return (
         <>
-            <form onSubmit={saveNota}>
+            <form onSubmit={updateNota}>
                 <div className="p-12">
                     <div className="overflow-x-auto bg-white p-4 max-w-screen-xl mx-auto">
                         <div className="mt-4 bt-4">
                             <InputLabel className="block text-gray-700 font-medium mb-2">
-                                Paciente:
+                                Residente:
                             </InputLabel>
                             <TextInput
                                 type="text"
@@ -89,7 +99,7 @@ const CreateForm = ({}) => {
                                                 handleSelectPaciente(paciente)
                                             }
                                         >
-                                            {paciente.nombres}
+                                            {paciente.nombres}{" "}
                                             {paciente.apellidos} (
                                             {paciente.cedula})
                                         </li>
@@ -100,10 +110,10 @@ const CreateForm = ({}) => {
                                 searchResults.length === 0 &&
                                 createPaciente && (
                                     <Link
-                                        href={route("residentes.create")}
+                                        href={route("pacientes.create")}
                                         className="text-blue-600 mt-2"
                                     >
-                                        Crear nuevo paciente
+                                        Crear nuevo Residente
                                     </Link>
                                 )}
                             <InputError
@@ -131,7 +141,7 @@ const CreateForm = ({}) => {
                             </div>
                             <div className="col-span-3">
                                 <InputLabel className="block text-gray-700">
-                                    Nota:
+                                    Evaluación:
                                 </InputLabel>
                                 <Editor
                                     apiKey="4e42yssu698u0uy1i5qx6ah0gx02y6hsi9nn34ljz0joxuxa"
@@ -141,9 +151,34 @@ const CreateForm = ({}) => {
                                         toolbar:
                                             "undo redo | bold italic underline",
                                     }}
-                                    value={data.nota || ""}
+                                    value={data.nota_evaluacion || ""}
                                     onEditorChange={(content) =>
-                                        setData("nota", content)
+                                        setData("nota_evaluacion", content)
+                                    }
+                                />
+                                <InputError
+                                    message={errors.nota}
+                                    className="mt-2"
+                                />
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-4 gap-6 mb-6">
+                            <div className="col-span-1"></div>
+                            <div className="col-span-3">
+                                <InputLabel className="block text-gray-700">
+                                    Prescripcion Médica:
+                                </InputLabel>
+                                <Editor
+                                    apiKey="4e42yssu698u0uy1i5qx6ah0gx02y6hsi9nn34ljz0joxuxa"
+                                    init={{
+                                        height: 250,
+                                        menubar: false,
+                                        toolbar:
+                                            "undo redo | bold italic underline",
+                                    }}
+                                    value={data.prescripcion_medica || ""}
+                                    onEditorChange={(content) =>
+                                        setData("prescripcion_medica", content)
                                     }
                                 />
                                 <InputError
@@ -155,7 +190,7 @@ const CreateForm = ({}) => {
                         <hr />
                         <div className="mt-4">
                             <Link
-                                href={route("notas-enfermeria.index")}
+                                href={route("notas-medicas.index")}
                                 className="bg-gray-600 inline-flex items-center rounded-md border border-transparent px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-gray-400 "
                             >
                                 Cancelar
@@ -164,7 +199,7 @@ const CreateForm = ({}) => {
                                 className="ms-4"
                                 disabled={processing}
                             >
-                                Guardar Nota
+                                Actualizar Nota Médica
                             </PrimaryButton>
                         </div>
                     </div>
@@ -173,4 +208,4 @@ const CreateForm = ({}) => {
         </>
     );
 };
-export default CreateForm;
+export default EditForm;

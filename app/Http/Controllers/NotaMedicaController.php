@@ -4,20 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\NotaEnfermeria;
-use Illuminate\Validation\Rules;
+use App\Models\NotaMedica;
 use Carbon\Carbon;
 
-class NotaEnfermeriaController extends Controller
+class NotaMedicaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
         $search = $request->input('search');
-
-        $notas = NotaEnfermeria::with('paciente', 'user')
+        $notas = NotaMedica::with('paciente', 'user')
             ->whereHas('paciente', function ($query) use ($search) {
                 $query->where('nombres', 'LIKE', "%$search%")
                     ->orWhere('apellidos', 'LIKE', "%$search%")
@@ -26,7 +22,7 @@ class NotaEnfermeriaController extends Controller
             ->orderBy('updated_at', 'desc')
             ->paginate(10);
 
-        return Inertia::render('NotasEnfermeria/Index', [
+        return Inertia::render('NotasMedicas/Index', [
             'notas' => $notas,
             'filters' => [
                 'search' => $search,
@@ -36,59 +32,57 @@ class NotaEnfermeriaController extends Controller
 
     public function create()
     {
-        return Inertia::render('NotasEnfermeria/Create');
+        return Inertia::render('NotasMedicas/Create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+
         $validate = $request->validate([
             'paciente' => 'required|exists:pacientes,id',
             'fecha' => 'required|date',
-            'nota' => 'required|string',
+            'nota_evaluacion' => 'required|string',
+            'prescripcion_medica' => 'required|string',
             'user' => 'required|numeric',
             'redirect' => 'nullable|string',
         ]);
         $validate['fecha'] = Carbon::parse($validate['fecha'])->format('Y-m-d H:i:s');
 
-        NotaEnfermeria::create([
+        NotaMedica::create([
             'id_paciente' => $validate['paciente'],
             'fecha' => $validate['fecha'],
-            'nota' => $validate['nota'],
+            'nota_evaluacion' => $validate['nota_evaluacion'],
+            'prescripcion_medica' => $validate['prescripcion_medica'],
             'id_user' => $validate['user'],
         ]);
-
+        
         if (array_key_exists('redirect', $validate) && $validate['redirect']) {
-            return redirect()->route($validate['redirect'])->with('success', 'Nota de enfermería creada correctamente');
+            return redirect()->route($validate['redirect'])->with('success', 'Nota Médica creada correctamente');
         }
-        return redirect()->route('notas-enfermeria.index')->with('success', 'Nota de enfermería creada correctamente');
+        return redirect()->route('notas-medicas.index')->with('success', 'Nota Médica creada correctamente');
     }
 
     public function edit(string $id)
     {
-        $nota_enfermeria = NotaEnfermeria::with('paciente')->with('user')->findOrFail($id);
-        $nota_enfermeria->fecha = $nota_enfermeria->fecha
-        ? $nota_enfermeria->fecha->format('Y-m-d\TH:i:s')
+        $nota_medica = NotaMedica::with('paciente')->with('user')->findOrFail($id);
+        $nota_medica->fecha = $nota_medica->fecha
+        ? $nota_medica->fecha->format('Y-m-d\TH:i:s')
         : null;
 
-        return Inertia::render('NotasEnfermeria/Edit', [
-            'nota' => $nota_enfermeria
+        return Inertia::render('NotasMedicas/Edit', [
+            'nota' => $nota_medica
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        $nota = NotaEnfermeria::findOrFail($id);
+        $nota = NotaMedica::findOrFail($id);
 
         $validate = $request->validate([
             'paciente' => 'required|exists:pacientes,id',
             'fecha' => 'required|date',
-            'nota' => 'required|string',
+            'nota_evaluacion' => 'required|string',
+            'prescripcion_medica' => 'required|string',
             'user' => 'required|numeric',
         ]);
         $validate['fecha'] = Carbon::parse($validate['fecha'])->format('Y-m-d H:i:s');
@@ -96,11 +90,12 @@ class NotaEnfermeriaController extends Controller
         $nota->update([
             'id_paciente' => $validate['paciente'],
             'fecha' => $validate['fecha'],
-            'nota' => $validate['nota'],
+            'nota_evaluacion' => $validate['nota_evaluacion'],
+            'prescripcion_medica' => $validate['prescripcion_medica'],
             'id_user' => $validate['user'],
         ]);
 
-        return redirect()->route('notas-enfermeria.index')->with('success', 'Nota de enfermería actualizada correctamente');
+        return redirect()->route('notas-medicas.index')->with('success', 'Nota Médica actualizada correctamente');
     }
 
     /**
@@ -108,8 +103,8 @@ class NotaEnfermeriaController extends Controller
      */
     public function destroy(string $id)
     {
-        $nota = NotaEnfermeria::findOrFail($id);
+        $nota = NotaMedica::findOrFail($id);
         $nota->delete();
-        return redirect()->route('notas-enfermeria.index')->with('success', 'Nota de Enfermeria eliminada!');
+        return redirect()->route('notas-medicas.index')->with('success', 'Nota Médica eliminada!');
     }
 }

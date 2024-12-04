@@ -49,6 +49,12 @@ export default function Authenticated({ header, children }) {
                                 >
                                     Notas de Enfermeria
                                 </NavLink>
+                                <NavLink
+                                    href={route("notas-medicas.index")}
+                                    active={route().current("notas-medicas")}
+                                >
+                                    Notas de Médicas
+                                </NavLink>
                             </div>
                         </div>
 
