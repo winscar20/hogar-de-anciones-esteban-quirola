@@ -8,7 +8,6 @@ const rolePermissions = {
         "editar_usuarios",
         "eliminar_usuarios",
         "ver_usuarios",
-        "crear_notas_enfermeria",
     ],
     Administrativo: [
         "crear_residentes",
