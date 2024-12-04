@@ -20,7 +20,7 @@ const TablaPacientes = ({ pacientes, filters }) => {
 
     const handleDelete = (id) => {
         if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
-            router.delete(route("pacientes.destroy", id), {
+            router.delete(route("residentes.destroy", id), {
                 preserveScroll: true, // Mantener el scroll actual después de la eliminación
                 onSuccess: () => {
                     if (flash?.success) {
