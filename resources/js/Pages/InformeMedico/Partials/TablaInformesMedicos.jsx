@@ -3,7 +3,7 @@ import { Link, usePage, router } from "@inertiajs/react";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
 import ModalCreateNotaMedica from "@/Components/ModalCreateNotaMedica";
-import { hasPermission } from "@/utils";
+import { hasPermission, obtenerRangoMeses } from "@/utils";
 const TablaInformesMedicos = ({ informes, filters }) => {
     const loggedUser = usePage().props.auth.user;
     const searchQuery = filters.search || "";
@@ -79,25 +79,32 @@ const TablaInformesMedicos = ({ informes, filters }) => {
                                             {informe.paciente.nombres}{" "}
                                             {informe.paciente.apellidos}
                                         </strong>{" "}
-                                        (C.I:
-                                        {informe.paciente.cedula})
                                     </span>
                                 </div>
                                 <div className="flex items-center">
                                     <i className="fa-solid fa-calendar text-gray-500 mr-2"></i>
                                     <span className="text-gray-700">
-                                        Fecha:{" "}
-                                        {format(
-                                            new Date(informe.fecha_inicio),
-                                            "dd/MM/yyyy HH:mm"
-                                        )}
+                                        Fecha Informe:{" "}
+                                        <span className="uppercase">
+                                            {obtenerRangoMeses(
+                                                format(
+                                                    new Date(
+                                                        informe.fecha_inicio
+                                                    ),
+                                                    "yyyy-MM-dd"
+                                                ),
+                                                format(
+                                                    new Date(informe.fecha_fin),
+                                                    "yyyy-MM-dd"
+                                                )
+                                            )}
+                                        </span>
                                     </span>
                                 </div>
                                 <div className="flex items-center">
                                     <i className="fa-solid fa-user-edit text-gray-500 mr-2"></i>
                                     <span className="text-gray-700">
-                                        Dr/Dra: {informe.doctor.name} (
-                                        {informe.doctor.email})
+                                        Dr/Dra: {informe.doctor.name}
                                     </span>
                                 </div>
                             </div>

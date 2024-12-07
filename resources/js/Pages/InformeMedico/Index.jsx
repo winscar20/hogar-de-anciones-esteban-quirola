@@ -11,8 +11,6 @@ const Index = () => {
     const [searchQuery, setSearchQuery] = useState(filters.search || "");
     const [isLoading, setIsLoading] = useState(false);
 
-    console.log(informes);
-
     useEffect(() => {
         setSearchQuery(filters.search || "");
     }, []);

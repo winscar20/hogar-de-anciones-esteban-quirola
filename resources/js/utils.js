@@ -46,3 +46,18 @@ export function hasPermission(role, action) {
     }
     return rolePermissions[role].includes(action);
 }
+
+export function obtenerRangoMeses(fecha1, fecha2) {
+    const inicio = new Date(fecha1);
+    const fin = new Date(fecha2);
+
+    const añoInicio = inicio.getFullYear();
+    const añoFin = fin.getFullYear();
+    const mesInicio = inicio.toLocaleString("default", { month: "long" });
+    const mesFin = fin.toLocaleString("default", { month: "long" });
+    if (añoInicio === añoFin) {
+        return `${mesInicio} - ${mesFin} del ${añoInicio}`;
+    } else {
+        return `${mesInicio} ${añoInicio} - ${mesFin} ${añoFin}`;
+    }
+}

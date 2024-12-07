@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
@@ -8,57 +8,56 @@ import DatePicker from "react-datepicker";
 import { Editor } from "@tinymce/tinymce-react";
 import { format } from "date-fns";
 import { useForm, usePage, Link } from "@inertiajs/react";
-const CreateForm = ({}) => {
+const EditForm = ({ informe }) => {
     const loggedUser = usePage().props.auth.user;
     const [searchText, setSearchText] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [createPaciente, setCreatePaciente] = useState(false);
-    const [showResidenteInfo, setShowResidenteInfo] = useState(false);
-    const { data, setData, post, errors, processing, reset } = useForm({
-        paciente: "",
-        doctor: loggedUser.id,
-        fecha_inicio: "",
-        fecha_fin: "",
-        apa_sis_circulatorio: "",
-        apa_sis_nervioso: "",
-        apa_sis_endocrino: "",
-        tratamiento_actual: "",
-        dieta_nutricion: "",
-        presion_arterial: "",
-        esfera_funcional: "",
-        esfera_mental: "",
-        esfera_social: "",
-        conclusion: "",
-        recomendaciones: "",
-        paciente_info: {},
+    const [showResidenteInfo, setShowResidenteInfo] = useState(true);
+    const { data, setData, put, errors, processing, reset } = useForm({
+        paciente: informe.paciente.id || "",
+        doctor: informe.doctor.id || loggedUser.id,
+        fecha_inicio: new Date(informe.fecha_inicio) || new Date(),
+        fecha_fin: new Date(informe.fecha_fin) || new Date(),
+        apa_sis_circulatorio: informe.apa_sis_circulatorio || "",
+        apa_sis_nervioso: informe.apa_sis_nervioso || "",
+        apa_sis_endocrino: informe.apa_sis_endocrino || "",
+        tratamiento_actual: informe.tratamiento_actual || "",
+        dieta_nutricion: informe.dieta_nutricion || "",
+        presion_arterial: informe.presion_arterial || "",
+        esfera_funcional: informe.esfera_funcional || "",
+        esfera_mental: informe.esfera_mental || "",
+        esfera_social: informe.esfera_social || "",
+        conclusion: informe.conclusion || "",
+        recomendaciones: informe.recomendaciones || "",
+        paciente_info: informe.paciente || {},
     });
-
-    const saveInforme = (e) => {
+    const updateInforme = (e) => {
         e.preventDefault();
         const formattedDateInicio = format(data.fecha_inicio, "yyyy-MM-dd");
         const formattedDateFin = format(data.fecha_fin, "yyyy-MM-dd");
-        post(route("informes-medicos.store"), {
+        put(route("informes-medicos.update", informe.id), {
             data: {
                 ...data,
                 fecha_inicio: formattedDateInicio,
                 fecha_fin: formattedDateFin,
             },
             onSuccess: () => {
-                setData("paciente", "");
-                setData("fecha_inicio", "");
-                setData("fecha_fin", "");
-                setData("apa_sis_circulatorio", "");
-                setData("apa_sis_nervioso", "");
-                setData("apa_sis_endocrino", "");
-                setData("tratamiento_actual", "");
-                setData("dieta_nutricion", "");
-                setData("presion_arterial", "");
-                setData("esfera_funcional", "");
-                setData("esfera_mental", "");
-                setData("esfera_social", "");
-                setData("conclusion", "");
-                setData("recomendaciones", "");
-                setData("paciente_info", {});
+                setData("paciente", informe.paciente.id);
+                setData("fecha_inicio", new Date(informe.fecha_inicio));
+                setData("fecha_fin", new Date(informe.fecha_fin));
+                setData("apa_sis_circulatorio", informe.apa_sis_circulatorio);
+                setData("apa_sis_nervioso", informe.apa_sis_nervioso);
+                setData("apa_sis_endocrino", informe.apa_sis_endocrino);
+                setData("tratamiento_actual", informe.tratamiento_actual);
+                setData("dieta_nutricion", informe.dieta_nutricion);
+                setData("presion_arterial", informe.presion_arterial);
+                setData("esfera_funcional", informe.esfera_funcional);
+                setData("esfera_mental", informe.esfera_mental);
+                setData("esfera_social", informe.esfera_social);
+                setData("conclusion", informe.conclusion);
+                setData("recomendaciones", informe.recomendaciones);
+                setData("paciente_info", informe.paciente);
             },
         });
         onErrors: (errors) => {
@@ -83,7 +82,7 @@ const CreateForm = ({}) => {
     };
 
     const handleSelectPaciente = (paciente) => {
-        setData({ ...data, paciente: paciente.id, paciente_info: paciente });
+        setData({ ...data, paciente: paciente.id });
         setSearchText(
             `${paciente.nombres} ${paciente.apellidos} (${paciente.cedula})`
         );
@@ -91,9 +90,17 @@ const CreateForm = ({}) => {
         setCreatePaciente(false);
         setShowResidenteInfo(true);
     };
+
+    useEffect(() => {
+        if (informe.paciente) {
+            setSearchText(
+                `${informe.paciente.nombres}  ${informe.paciente.apellidos} (${informe.paciente.cedula})`
+            );
+        }
+    }, [informe]);
     return (
         <>
-            <form onSubmit={saveInforme}>
+            <form onSubmit={updateInforme}>
                 <div className="p-12">
                     <div className="overflow-x-auto bg-white p-4 max-w-screen-xl mx-auto">
                         <fieldset className="border border-solid border-blue-400 p-3 pb-6 mb-6 rounded">
@@ -190,10 +197,8 @@ const CreateForm = ({}) => {
                                             className="w-full border rounded px-3 py-2"
                                             placeholderText="Seleccione una fecha"
                                             dateFormat="yyyy-MM-dd"
-                                            showMonthYearPicker
                                             showPopperArrow={false}
                                             isClearable
-                                            required
                                         />
                                         <InputError
                                             message={errors.fecha_fin}
@@ -706,4 +711,4 @@ const CreateForm = ({}) => {
         </>
     );
 };
-export default CreateForm;
+export default EditForm;
