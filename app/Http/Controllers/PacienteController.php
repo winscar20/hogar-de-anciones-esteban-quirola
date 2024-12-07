@@ -134,7 +134,8 @@ class PacienteController extends Controller
     public function search(Request $request) {
         $query = $request->input('query');
 
-        $pacientes = Paciente::where('nombres', 'LIKE', "%$query%")
+        $pacientes = Paciente::with('responsable')
+            ->where('nombres', 'LIKE', "%$query%")
             ->orWhere('apellidos', 'LIKE', "%$query%")
             ->orWhere('cedula', 'LIKE', "%$query%")
             ->get();

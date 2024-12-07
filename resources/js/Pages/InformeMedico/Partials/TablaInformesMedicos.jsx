@@ -50,9 +50,8 @@ const TablaInformesMedicos = ({ informes, filters }) => {
         }
     };
 
-    const handleModalOpen = (informe) => {
-        setInforme(informe);
-        openModal();
+    const handlViewInforme = (informe) => {
+        console.log(informe);
     };
     return (
         <>
@@ -104,24 +103,24 @@ const TablaInformesMedicos = ({ informes, filters }) => {
                             </div>
                             <div className="mt-4 border-b-2 pb-4">
                                 <h2 className="text-lg font-semibold">
-                                    Evaluacion:
+                                    Conclusión:
                                 </h2>
                                 <p
                                     className="text-gray-600"
                                     dangerouslySetInnerHTML={{
-                                        __html: informe.recomendaciones,
+                                        __html: informe.conclusion,
                                     }}
                                 ></p>
                             </div>
 
                             <div className="mt-4 border-b-2 pb-4">
                                 <h2 className="text-lg font-semibold">
-                                    Prescripcion Médica:
+                                    Recomendaciones
                                 </h2>
                                 <p
                                     className="text-gray-600"
                                     dangerouslySetInnerHTML={{
-                                        __html: informe.conclusion,
+                                        __html: informe.recomendaciones,
                                     }}
                                 ></p>
                             </div>
@@ -132,16 +131,11 @@ const TablaInformesMedicos = ({ informes, filters }) => {
                                 <div className="flex justify-end mt-4 space-x-4">
                                     <button
                                         className="text-blue-500 hover:underline"
-                                        onClick={() => handleModalOpen(informe)}
-                                    >
-                                        <i className="fa-solid fa-notes-medical"></i>{" "}
-                                        informe a{" "}
-                                        {informe.paciente.nombres.split(" ")[0]}{" "}
-                                        {
-                                            informe.paciente.apellidos.split(
-                                                " "
-                                            )[0]
+                                        onClick={() =>
+                                            handlViewInforme(informe)
                                         }
+                                    >
+                                        <i className="fa-solid fa-eye"></i> Ver
                                     </button>
                                     <span className="text-sm text-gray-300">
                                         |

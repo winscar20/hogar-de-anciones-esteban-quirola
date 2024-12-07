@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import { hasPermission } from "@/utils";
 const Index = () => {
     const loggedUser = usePage().props.auth.user;
-    console.log(loggedUser);
     const { informes, flash, filters } = usePage().props;
     const [searchQuery, setSearchQuery] = useState(filters.search || "");
     const [isLoading, setIsLoading] = useState(false);

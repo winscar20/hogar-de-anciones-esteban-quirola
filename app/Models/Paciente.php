@@ -35,6 +35,9 @@ class Paciente extends Model
     public function notasMedicas() {
         return $this->hasMany(NotaMedica::class, 'id_paciente', 'id');
     }
+    public function informesMedicos() {
+        return $this->hasMany(InformeMedico::class, 'id_paciente', 'id');
+    }
 
     public function setTelefonoAttribute($value)
     {

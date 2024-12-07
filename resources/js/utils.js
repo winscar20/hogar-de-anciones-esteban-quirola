@@ -8,10 +8,6 @@ const rolePermissions = {
         "editar_usuarios",
         "eliminar_usuarios",
         "ver_usuarios",
-        "ver_informes_medicos", //Pasar a doctor
-        "crear_informes_medicos", //Pasar a doctor
-        "editar_informes_medicos", //Pasar a doctor
-        "eliminar_informes_medicos", //Pasar a doctor
     ],
     Administrativo: [
         "crear_residentes",
@@ -29,6 +25,10 @@ const rolePermissions = {
         "editar_notas_medicas",
         "eliminar_notas_medicas",
         "ver_notas_medicas",
+        "ver_informes_medicos",
+        "crear_informes_medicos",
+        "editar_informes_medicos",
+        "eliminar_informes_medicos",
     ],
     Enfermeria: [
         "ver_residentes",
