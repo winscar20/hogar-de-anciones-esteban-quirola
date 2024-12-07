@@ -8,6 +8,10 @@ const rolePermissions = {
         "editar_usuarios",
         "eliminar_usuarios",
         "ver_usuarios",
+        "ver_informes_medicos", //Pasar a doctor
+        "crear_informes_medicos", //Pasar a doctor
+        "editar_informes_medicos", //Pasar a doctor
+        "eliminar_informes_medicos", //Pasar a doctor
     ],
     Administrativo: [
         "crear_residentes",
@@ -35,7 +39,6 @@ const rolePermissions = {
     Externo: ["ver_residentes"],
 };
 
-// Función para verificar permisos
 export function hasPermission(role, action) {
     if (!rolePermissions[role]) {
         console.warn(`El rol ${role} no está definido en los permisos.`);
