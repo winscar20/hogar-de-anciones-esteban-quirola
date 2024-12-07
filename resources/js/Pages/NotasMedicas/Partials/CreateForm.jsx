@@ -23,21 +23,20 @@ const CreateForm = ({}) => {
         e.preventDefault();
         const formattedDate = format(data.fecha, "yyyy-MM-dd HH:mm:ss");
         post(route("notas-medicas.store"), {
-            // data: {
-            //     ...data,
-            //     fecha: formattedDate, // Usar la fecha formateada
-            // },
-            // onSuccess: () => {
-            //     setData("nota_evaluacion", "");
-            //     setData("prescripcion_medica", "");
-            //     setData("fecha", new Date());
-            //     setData("paciente", "");
-            // },
+            data: {
+                ...data,
+                fecha: formattedDate, // Usar la fecha formateada
+            },
+            onSuccess: () => {
+                setData("nota_evaluacion", "");
+                setData("prescripcion_medica", "");
+                setData("fecha", new Date());
+                setData("paciente", "");
+            },
         });
         onErrors: (errors) => {
             console.log(errors);
         };
-        console.log(data);
     };
 
     const handleSearch = async (e) => {

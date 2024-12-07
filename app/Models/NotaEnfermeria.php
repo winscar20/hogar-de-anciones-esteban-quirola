@@ -16,7 +16,6 @@ class NotaEnfermeria extends Model
         'fecha',
         'nota',
     ];
-    // Define los atributos que son fechas
     protected $casts = [
         'fecha' => 'datetime',
     ];

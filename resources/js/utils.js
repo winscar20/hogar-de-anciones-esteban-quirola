@@ -25,6 +25,10 @@ const rolePermissions = {
         "editar_notas_medicas",
         "eliminar_notas_medicas",
         "ver_notas_medicas",
+        "ver_informes_medicos",
+        "crear_informes_medicos",
+        "editar_informes_medicos",
+        "eliminar_informes_medicos",
     ],
     Enfermeria: [
         "ver_residentes",
@@ -35,11 +39,25 @@ const rolePermissions = {
     Externo: ["ver_residentes"],
 };
 
-// Función para verificar permisos
 export function hasPermission(role, action) {
     if (!rolePermissions[role]) {
         console.warn(`El rol ${role} no está definido en los permisos.`);
         return false;
     }
     return rolePermissions[role].includes(action);
+}
+
+export function obtenerRangoMeses(fecha1, fecha2) {
+    const inicio = new Date(fecha1);
+    const fin = new Date(fecha2);
+
+    const añoInicio = inicio.getFullYear();
+    const añoFin = fin.getFullYear();
+    const mesInicio = inicio.toLocaleString("default", { month: "long" });
+    const mesFin = fin.toLocaleString("default", { month: "long" });
+    if (añoInicio === añoFin) {
+        return `${mesInicio} - ${mesFin} del ${añoInicio}`;
+    } else {
+        return `${mesInicio} ${añoInicio} - ${mesFin} ${añoFin}`;
+    }
 }

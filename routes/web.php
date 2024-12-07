@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\NotaEnfermeriaController;
 use App\Http\Controllers\NotaMedicaController;
+use App\Http\Controllers\InformeMedicoController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::get('api/residentes/search', [PacienteController::class, 'search'])->name('pacientes.search');
     Route::resource('/notas-enfermeria', NotaEnfermeriaController::class);
     Route::resource('/notas-medicas', NotaMedicaController::class);
+    Route::resource('/informes-medicos', InformeMedicoController::class);
 });
 
 require __DIR__.'/auth.php';
