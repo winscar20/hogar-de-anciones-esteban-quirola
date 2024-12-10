@@ -136,14 +136,15 @@ const TablaInformesMedicos = ({ informes, filters }) => {
                                 "crear_informes_medicos"
                             ) && (
                                 <div className="flex justify-end mt-4 space-x-4">
-                                    <button
+                                    <Link
                                         className="text-blue-500 hover:underline"
-                                        onClick={() =>
-                                            handlViewInforme(informe)
-                                        }
+                                        href={route(
+                                            "informes-medicos.show",
+                                            informe.id
+                                        )}
                                     >
                                         <i className="fa-solid fa-eye"></i> Ver
-                                    </button>
+                                    </Link>
                                     <span className="text-sm text-gray-300">
                                         |
                                     </span>

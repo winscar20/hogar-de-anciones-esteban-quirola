@@ -131,12 +131,23 @@ class InformeMedicoController extends Controller
 
     public function show(string $id)
     {
-        //
+        $informe_medico = InformeMedico::with('paciente.responsable')->with('doctor')->findOrFail($id);
+        $informe_medico->fecha_inicio = $informe_medico->fecha_inicio
+        ? $informe_medico->fecha_inicio->format('Y-m-d')
+        : null;
+
+        $informe_medico->fecha_fin = $informe_medico->fecha_fin
+        ? $informe_medico->fecha_fin->format('Y-m-d')
+        : null;
+
+        return Inertia::render('InformeMedico/Show', [
+            'informe' => $informe_medico
+        ]);
     }
 
     public function edit(string $id)
     {
-        $informe_medico = InformeMedico::with('paciente')->with('doctor')->findOrFail($id);
+        $informe_medico = InformeMedico::with('paciente.responsable')->with('doctor')->findOrFail($id);
         $informe_medico->fecha_inicio = $informe_medico->fecha_inicio
         ? $informe_medico->fecha_inicio->format('Y-m-d')
         : null;
