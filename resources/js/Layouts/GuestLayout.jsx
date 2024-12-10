@@ -1,4 +1,4 @@
-import ApplicationLogo from "../../../resources/images/logo2.jpeg";
+import ApplicationLogo from "../../../resources/images/logo.png";
 import { Link } from "@inertiajs/react";
 
 export default function Guest({ children }) {

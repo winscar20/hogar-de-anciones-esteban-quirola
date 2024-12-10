@@ -1,4 +1,4 @@
-import ApplicationLogo from "../../../resources/images/logo2.jpeg";
+import ApplicationLogo from "../../../resources/images/logo.png";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
