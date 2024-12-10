@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { Head, useForm, Link } from "@inertiajs/react";
+import DatePicker from "react-datepicker";
 import { Editor } from "@tinymce/tinymce-react";
 import FormTitleHeader from "@/Components/FormTitleHeader";
-
+import { calcularEdad } from "@/utils";
+import { format, set } from "date-fns";
 const Create = () => {
+    const [fechaNacimiento, setFechaNacimiento] = useState(null);
     const [searchText, setSearchText] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [createUserFlag, setCreateUserFlag] = useState(false);
@@ -24,7 +27,18 @@ const Create = () => {
         enfermedad_actual: "",
         responsable: "",
         inventario: "",
+        fecha_nacimiento: "",
+        edad: "",
     });
+
+    const handleFechaChange = (date) => {
+        setFechaNacimiento(date);
+        setData({
+            ...data,
+            edad: calcularEdad(date),
+            fecha_nacimiento: date,
+        });
+    };
 
     const handleSearch = async (e) => {
         const query = e.target.value;
@@ -41,8 +55,10 @@ const Create = () => {
     };
     const savePaciente = (e) => {
         e.preventDefault();
-
         post(route("residentes.store"), {
+            data: {
+                ...data,
+            },
             onSuccess: () => {
                 setData("nombres", "");
                 setData("apellidos", "");
@@ -55,6 +71,8 @@ const Create = () => {
                 setData("enfermedad_actual", "");
                 setData("responsable", "");
                 setData("inventario", "");
+                setData("fecha_nacimiento", "");
+                setData("edad", "");
             },
 
             onError: (errors) => {
@@ -263,6 +281,49 @@ const Create = () => {
                                     />
                                     <InputError
                                         message={errors.telefono}
+                                        className="mt-2"
+                                    />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <InputLabel className="block text-gray-700">
+                                        Fecha de Nacimiento
+                                    </InputLabel>
+                                    <DatePicker
+                                        selected={data.fecha_nacimiento}
+                                        onChange={handleFechaChange}
+                                        className="border rounded px-3 py-2 w-full"
+                                        placeholderText="Selecciona una fecha"
+                                        dateFormat="yyyy-MM-dd"
+                                        showYearDropdown
+                                        yearDropdownItemNumber={120}
+                                        scrollableYearDropdown
+                                        popperPlacement="right" // Selección automática según el espacio
+                                    />
+                                    <InputError
+                                        message={errors.fecha_nacimiento}
+                                        className="mt-2"
+                                    />
+                                </div>
+
+                                {/* Campo telefono */}
+                                <div>
+                                    <InputLabel className="block text-gray-700">
+                                        Edad:
+                                    </InputLabel>
+                                    <TextInput
+                                        type="text"
+                                        name="edad"
+                                        value={data.edad || ""}
+                                        onChange={(e) =>
+                                            setData("edad", e.target.value)
+                                        }
+                                        className="w-full  px-3 py-2 block border border-gray-300 bg-gray-200 text-gray-700 rounded-md p-2 cursor-not-allowed"
+                                        disabled
+                                    />
+                                    <InputError
+                                        message={errors.edad}
                                         className="mt-2"
                                     />
                                 </div>

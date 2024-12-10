@@ -7,6 +7,7 @@ use App\Models\Paciente;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Lang;
+use Carbon\Carbon;
 class PacienteController extends Controller
 {
     /**
@@ -57,7 +58,13 @@ class PacienteController extends Controller
             'antecedentes_patologicos' => 'string',
             'enfermedad_actual' => 'required|string',
             'inventario' => 'string',
+            'fecha_nacimiento' => 'required|date',
+            'edad' => 'required|numeric',
         ]);
+
+        $validated['fecha_nacimiento'] = Carbon::parse($validated['fecha_nacimiento'], 'UTC')
+        ->setTimezone(config('app.timezone'))
+        ->format('Y-m-d');
         Paciente::create([
             'nombres' => $validated['nombres'],
             'apellidos' => $validated['apellidos'],
@@ -70,6 +77,8 @@ class PacienteController extends Controller
             'antecedentes_patologicos' => $validated['antecedentes_patologicos'] ?? null,
             'enfermedad_actual' => $validated['enfermedad_actual'],
             'inventario' => $validated['inventario'] ?? null,
+            'fecha_nacimiento' => $validated['fecha_nacimiento'],
+            'edad' => $validated['edad'],
         ]);
         return redirect()->route('residentes.index')->with('success', 'Usuario creado exitosamente.');
     }
@@ -80,8 +89,8 @@ class PacienteController extends Controller
      */
     public function edit(string $id)
     {
-        $paciente = Paciente::with('responsable')->findOrFail($id); // Encuentra el usuario o lanza un error 404
-
+        $paciente = Paciente::with('responsable')->findOrFail($id);
+        $paciente->fecha_nacimiento = Carbon::parse($paciente->fecha_nacimiento)->format('Y-m-d');
         return Inertia::render('Pacientes/Edit', [
             'paciente' => $paciente
         ]);
@@ -106,8 +115,11 @@ class PacienteController extends Controller
             'antecedentes_patologicos' => 'string',
             'enfermedad_actual' => 'required|string',
             'inventario' => 'string',
+            'fecha_nacimiento' => 'required|date',
+            'edad' => 'required|numeric',
         ]);
 
+        $validated['fecha_nacimiento'] = Carbon::parse($validated['fecha_nacimiento'])->format('Y-m-d');
         $paciente->update([
             'nombres' => $validated['nombres'],
             'apellidos' => $validated['apellidos'],
@@ -120,6 +132,8 @@ class PacienteController extends Controller
             'antecedentes_patologicos' => $validated['antecedentes_patologicos'] ?? null,
             'enfermedad_actual' => $validated['enfermedad_actual'],
             'inventario' => $validated['inventario'] ?? null,
+            'fecha_nacimiento' => $validated['fecha_nacimiento'],
+            'edad' => $validated['edad'],
         ]);
 
         return redirect()->route('residentes.index')->with('success', 'Paciente actualizado exitosamente.');
