@@ -18,7 +18,6 @@ export default function Authenticated({ header, children }) {
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
                                 <Link href={route("dashboard")}>
-                                    {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" /> */}
                                     <img
                                         src={ApplicationLogo}
                                         width={120}
@@ -30,37 +29,51 @@ export default function Authenticated({ header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 {user.role.name !== "Externo" && (
-                                    <NavLink
-                                        href={route("users.index")}
-                                        active={route().current("users")}
-                                    >
-                                        Usuarios del Sistema
-                                    </NavLink>
+                                    <>
+                                        <NavLink
+                                            href={route("users.index")}
+                                            active={route().current("users")}
+                                        >
+                                            Usuarios del Sistema
+                                        </NavLink>
+                                        <NavLink
+                                            href={route("residentes.index")}
+                                            active={route().current(
+                                                "pacientes"
+                                            )}
+                                        >
+                                            Residentes
+                                        </NavLink>
+                                        <NavLink
+                                            href={route(
+                                                "notas-enfermeria.index"
+                                            )}
+                                            active={route().current(
+                                                "notas-enfermeria"
+                                            )}
+                                        >
+                                            Notas de Enfermeria
+                                        </NavLink>
+                                        <NavLink
+                                            href={route("notas-medicas.index")}
+                                            active={route().current(
+                                                "notas-medicas"
+                                            )}
+                                        >
+                                            Notas de Médicas
+                                        </NavLink>
+                                        <NavLink
+                                            href={route(
+                                                "informes-medicos.index"
+                                            )}
+                                            active={route().current(
+                                                "informes-medicos"
+                                            )}
+                                        >
+                                            Informes Medicos
+                                        </NavLink>
+                                    </>
                                 )}
-                                <NavLink
-                                    href={route("residentes.index")}
-                                    active={route().current("pacientes")}
-                                >
-                                    Residentes
-                                </NavLink>
-                                <NavLink
-                                    href={route("notas-enfermeria.index")}
-                                    active={route().current("notas-enfermeria")}
-                                >
-                                    Notas de Enfermeria
-                                </NavLink>
-                                <NavLink
-                                    href={route("notas-medicas.index")}
-                                    active={route().current("notas-medicas")}
-                                >
-                                    Notas de Médicas
-                                </NavLink>
-                                <NavLink
-                                    href={route("informes-medicos.index")}
-                                    active={route().current("informes-medicos")}
-                                >
-                                    Informes Medicos
-                                </NavLink>
                             </div>
                         </div>
 
