@@ -57,7 +57,11 @@ const Edit = ({ paciente }) => {
         e.preventDefault();
         put(route("residentes.update", paciente.id), {
             preserveScroll: true,
+            onError: (errors) => {
+                console.error(errors);
+            },
         });
+        console.log(data);
     };
 
     const handleSelectUser = (user) => {
