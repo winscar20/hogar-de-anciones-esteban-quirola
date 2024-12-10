@@ -56,6 +56,7 @@ const Index = () => {
                 draggable: true,
                 progress: undefined,
             });
+            setSearchQuery("");
         }
 
         if (flash?.error) {
