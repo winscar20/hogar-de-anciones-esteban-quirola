@@ -356,6 +356,42 @@ const EditForm = ({ informe }) => {
                                         />
                                     </div>
                                 </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                    <div>
+                                        <InputLabel className="block text-gray-700">
+                                            Fecha de Naacimiento
+                                        </InputLabel>
+                                        <TextInput
+                                            type="text"
+                                            name="fecha_nacimiento"
+                                            value={format(
+                                                data.paciente_info
+                                                    .fecha_nacimiento,
+                                                "yyyy-MM-dd"
+                                            )}
+                                            className="w-full  px-3 py-2 block border border-gray-300 bg-gray-200 text-gray-700 rounded-md p-2 cursor-not-allowed"
+                                            readOnly
+                                            disabled
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <InputLabel className="block text-gray-700">
+                                            Edad
+                                        </InputLabel>
+                                        <TextInput
+                                            type="text"
+                                            name="edad"
+                                            value={
+                                                data.paciente_info.edad || ""
+                                            }
+                                            className="w-full  px-3 py-2 block border border-gray-300 bg-gray-200 text-gray-700 rounded-md p-2 cursor-not-allowed"
+                                            disabled
+                                            readOnly
+                                            required
+                                        />
+                                    </div>
+                                </div>
 
                                 <div className="grid grid-cols-1  gap-6 mb-6">
                                     <div>
