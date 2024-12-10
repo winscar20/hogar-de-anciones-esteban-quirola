@@ -22,6 +22,12 @@ class Paciente extends Model
         'antecedentes_patologicos',
         'enfermedad_actual',
         'inventario',
+        'fecha_nacimiento',
+        'edad',
+    ];
+
+    protected $casts = [
+        'fecha_nacimiento' => 'date',
     ];
 
     public function responsable()

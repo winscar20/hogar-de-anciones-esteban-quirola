@@ -6,9 +6,21 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { Head, usePage, useForm, Link } from "@inertiajs/react";
 import { Editor } from "@tinymce/tinymce-react";
+import DatePicker from "react-datepicker";
 import FormTitleHeader from "@/Components/FormTitleHeader";
+import { calcularEdad } from "@/utils";
+import { format } from "date-fns";
 
 const Edit = ({ paciente }) => {
+    const [fechaNacimiento, setFechaNacimiento] = useState(null);
+    const handleFechaChange = (date) => {
+        setFechaNacimiento(date);
+        setData({
+            ...data,
+            edad: calcularEdad(date),
+            fecha_nacimiento: date,
+        });
+    };
     const [searchText, setSearchText] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [createUserFlag, setCreateUserFlag] = useState(false);
@@ -24,6 +36,8 @@ const Edit = ({ paciente }) => {
         enfermedad_actual: paciente.enfermedad_actual || "",
         responsable: paciente.responsable.id || "",
         inventario: paciente.inventario || "",
+        fecha_nacimiento: new Date(paciente.fecha_nacimiento) || "",
+        edad: paciente.edad || "",
     });
 
     const handleSearch = async (e) => {
@@ -254,6 +268,49 @@ const Edit = ({ paciente }) => {
                                     />
                                     <InputError
                                         message={errors.telefono}
+                                        className="mt-2"
+                                    />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <InputLabel className="block text-gray-700">
+                                        Fecha de Nacimiento
+                                    </InputLabel>
+                                    <DatePicker
+                                        selected={data.fecha_nacimiento}
+                                        onChange={handleFechaChange}
+                                        className="border rounded px-3 py-2 w-full"
+                                        placeholderText="Selecciona una fecha"
+                                        dateFormat="yyyy-MM-dd"
+                                        showYearDropdown
+                                        yearDropdownItemNumber={120}
+                                        scrollableYearDropdown
+                                        popperPlacement="right" // Selección automática según el espacio
+                                    />
+                                    <InputError
+                                        message={errors.fecha_nacimiento}
+                                        className="mt-2"
+                                    />
+                                </div>
+
+                                {/* Campo telefono */}
+                                <div>
+                                    <InputLabel className="block text-gray-700">
+                                        Edad:
+                                    </InputLabel>
+                                    <TextInput
+                                        type="text"
+                                        name="edad"
+                                        value={data.edad || ""}
+                                        onChange={(e) =>
+                                            setData("edad", e.target.value)
+                                        }
+                                        className="w-full  px-3 py-2 block border border-gray-300 bg-gray-200 text-gray-700 rounded-md p-2 cursor-not-allowed"
+                                        disabled
+                                    />
+                                    <InputError
+                                        message={errors.edad}
                                         className="mt-2"
                                     />
                                 </div>

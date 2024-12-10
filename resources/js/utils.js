@@ -61,3 +61,17 @@ export function obtenerRangoMeses(fecha1, fecha2) {
         return `${mesInicio} ${añoInicio} - ${mesFin} ${añoFin}`;
     }
 }
+
+// Calcular edad basado en la fecha de nacimiento
+export function calcularEdad(fecha) {
+    if (!fecha) return "";
+    const hoy = new Date();
+    let años = hoy.getFullYear() - fecha.getFullYear();
+    const mes = hoy.getMonth() - fecha.getMonth();
+
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fecha.getDate())) {
+        años--;
+    }
+
+    return años;
+}
