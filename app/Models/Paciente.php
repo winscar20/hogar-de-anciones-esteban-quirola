@@ -21,6 +21,7 @@ class Paciente extends Model
         'motivo_ingreso',
         'antecedentes_patologicos',
         'enfermedad_actual',
+        'inventario',
     ];
 
     public function responsable()

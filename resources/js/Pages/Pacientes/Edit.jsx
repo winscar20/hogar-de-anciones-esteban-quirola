@@ -6,6 +6,7 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { Head, usePage, useForm, Link } from "@inertiajs/react";
 import { Editor } from "@tinymce/tinymce-react";
+import FormTitleHeader from "@/Components/FormTitleHeader";
 
 const Edit = ({ paciente }) => {
     const [searchText, setSearchText] = useState("");
@@ -22,6 +23,7 @@ const Edit = ({ paciente }) => {
         antecedentes_patologicos: paciente.antecedentes_patologicos || "",
         enfermedad_actual: paciente.enfermedad_actual || "",
         responsable: paciente.responsable.id || "",
+        inventario: paciente.inventario || "",
     });
 
     const handleSearch = async (e) => {
@@ -256,6 +258,9 @@ const Edit = ({ paciente }) => {
                                     />
                                 </div>
                             </div>
+                            <div>
+                                <FormTitleHeader title="Anamnesis" />
+                            </div>
                             {/* Textareas con TinyMCE */}
                             <div className="col-span-2">
                                 <InputLabel className="block text-gray-700">
@@ -314,6 +319,29 @@ const Edit = ({ paciente }) => {
                                     value={data.enfermedad_actual || ""}
                                     onEditorChange={(content) =>
                                         setData("enfermedad_actual", content)
+                                    }
+                                />
+                            </div>
+                            <div>
+                                <FormTitleHeader title="Inventario del Residente" />
+                            </div>
+                            <div className="col-span-2 mt-6 mb-6">
+                                <InputLabel className="block text-gray-700">
+                                    Describa las cosas con las que llego el
+                                    Residente:
+                                </InputLabel>
+                                <Editor
+                                    apiKey="4e42yssu698u0uy1i5qx6ah0gx02y6hsi9nn34ljz0joxuxa"
+                                    init={{
+                                        height: 200,
+                                        menubar: false, // Ocultar barra de menú
+                                        toolbar:
+                                            "undo redo | bold italic underline", // Herramientas personalizadas
+                                        // plugins: ["link lists"], // Plugins necesarios
+                                    }}
+                                    value={data.inventario || ""}
+                                    onEditorChange={(content) =>
+                                        setData("inventario", content)
                                     }
                                 />
                             </div>

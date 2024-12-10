@@ -56,6 +56,7 @@ class PacienteController extends Controller
             'motivo_ingreso' => 'required|string',
             'antecedentes_patologicos' => 'string',
             'enfermedad_actual' => 'required|string',
+            'inventario' => 'string',
         ]);
         Paciente::create([
             'nombres' => $validated['nombres'],
@@ -68,6 +69,7 @@ class PacienteController extends Controller
             'motivo_ingreso' => $validated['motivo_ingreso'],
             'antecedentes_patologicos' => $validated['antecedentes_patologicos'] ?? null,
             'enfermedad_actual' => $validated['enfermedad_actual'],
+            'inventario' => $validated['inventario'] ?? null,
         ]);
         return redirect()->route('residentes.index')->with('success', 'Usuario creado exitosamente.');
     }
@@ -103,6 +105,7 @@ class PacienteController extends Controller
             'motivo_ingreso' => 'required|string',
             'antecedentes_patologicos' => 'string',
             'enfermedad_actual' => 'required|string',
+            'inventario' => 'string',
         ]);
 
         $paciente->update([
@@ -116,6 +119,7 @@ class PacienteController extends Controller
             'motivo_ingreso' => $validated['motivo_ingreso'],
             'antecedentes_patologicos' => $validated['antecedentes_patologicos'] ?? null,
             'enfermedad_actual' => $validated['enfermedad_actual'],
+            'inventario' => $validated['inventario'] ?? null,
         ]);
 
         return redirect()->route('residentes.index')->with('success', 'Paciente actualizado exitosamente.');
