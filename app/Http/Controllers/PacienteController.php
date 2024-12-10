@@ -57,7 +57,7 @@ class PacienteController extends Controller
             'motivo_ingreso' => 'required|string',
             'antecedentes_patologicos' => 'string',
             'enfermedad_actual' => 'required|string',
-            'inventario' => 'string',
+            'inventario' => 'nullable|string',
             'fecha_nacimiento' => 'required|date',
             'edad' => 'required|numeric',
         ]);
@@ -114,7 +114,7 @@ class PacienteController extends Controller
             'motivo_ingreso' => 'required|string',
             'antecedentes_patologicos' => 'string',
             'enfermedad_actual' => 'required|string',
-            'inventario' => 'string',
+            'inventario' => 'nullable|string',
             'fecha_nacimiento' => 'required|date',
             'edad' => 'required|numeric',
         ]);

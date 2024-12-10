@@ -57,7 +57,11 @@ const Edit = ({ paciente }) => {
         e.preventDefault();
         put(route("residentes.update", paciente.id), {
             preserveScroll: true,
+            onError: (errors) => {
+                console.error(errors);
+            },
         });
+        console.log(data);
     };
 
     const handleSelectUser = (user) => {
@@ -385,7 +389,7 @@ const Edit = ({ paciente }) => {
                             <div className="col-span-2 mt-6 mb-6">
                                 <InputLabel className="block text-gray-700">
                                     Describa las cosas con las que llego el
-                                    Residente:
+                                    Residente (Opcional):
                                 </InputLabel>
                                 <Editor
                                     apiKey="4e42yssu698u0uy1i5qx6ah0gx02y6hsi9nn34ljz0joxuxa"
