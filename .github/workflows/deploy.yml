@@ -18,7 +18,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           script: |
-            source ~/.bashrc
+            echo $(pwd)
+            source /root/.bashrc
             cd /var/www/laravel
             git pull
             ./restart.sh
