@@ -100,7 +100,7 @@ const TablaPacientes = ({ pacientes, filters }) => {
                             APELLIDOS
                         </th>
                         <th scope="col" className="px-6 py-4">
-                            CEDULA
+                            Num Identificacion
                         </th>
                         <th scope="col" className="px-6 py-4">
                             RESPONSABLE
