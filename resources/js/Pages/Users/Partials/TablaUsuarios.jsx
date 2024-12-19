@@ -55,7 +55,7 @@ const TablaUsuarios = ({ users, filters }) => {
                             TELEFONO
                         </th>
                         <th scope="col" className="px-6 py-4">
-                            EMAIL
+                            CORREO
                         </th>
                         <th scope="col" className="px-6 py-4">
                             ROL
