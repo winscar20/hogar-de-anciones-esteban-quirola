@@ -1,4 +1,4 @@
-name: Desplegara Digital Ocean
+name: Desplegar a Digital Ocean
 
 on:
   workflow_dispatch:
